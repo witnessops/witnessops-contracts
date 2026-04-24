@@ -1,0 +1,14 @@
+{
+  "manifest_version": "witnessops.evidence_manifest.v0",
+  "workflow_class": "privileged_access_approval",
+  "proof_run_id": "pr_20260424_privileged_access_001",
+  "source_systems": ["servicenow"],
+  "artifacts": [
+    {
+      "artifact_id": "approval_record",
+      "artifact_type": "authority_approval",
+      "source_system": "servicenow",
+      "path": "evidence/approval/servicenow_approval_record.json"
+    }
+  ]
+}
