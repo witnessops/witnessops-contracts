@@ -1,0 +1,80 @@
+{
+  "package_index_version": "witnessops.package_index.v0",
+  "workflow_class": "privileged_access_approval",
+  "proof_run_id": "pr_20260424_privileged_access_001",
+  "outcome": "pass",
+  "verification_status": "valid",
+  "verification_result_source": "producer_side_until_replaced_by_witnessops_verifier",
+  "artifact_count": 9,
+  "artifacts": [
+    {
+      "path": "README.md",
+      "role": "presentation",
+      "producer": "witnessops-proof-engine",
+      "required": true,
+      "description": "Buyer and auditor inspection guide."
+    },
+    {
+      "path": "package_index.json",
+      "role": "inventory",
+      "producer": "witnessops-proof-engine",
+      "required": true,
+      "description": "Machine-readable package inventory."
+    },
+    {
+      "path": "receipt.json",
+      "role": "receipt",
+      "producer": "witnessops-proof-engine",
+      "required": true,
+      "description": "Signed bounded result envelope."
+    },
+    {
+      "path": "evidence_manifest.json",
+      "role": "manifest",
+      "producer": "witnessops-proof-engine",
+      "required": true,
+      "description": "Artifact inventory and SHA-256 bindings."
+    },
+    {
+      "path": "verification_result.json",
+      "role": "verification_result",
+      "producer": "witnessops-proof-engine_or_witnessops-verifier",
+      "required": true,
+      "description": "Verifier-result contract artifact."
+    },
+    {
+      "path": "report.md",
+      "role": "presentation",
+      "producer": "witnessops-proof-engine",
+      "required": true,
+      "description": "Human-readable report derived from package artifacts."
+    },
+    {
+      "path": "results/comparison_result.json",
+      "role": "comparison_result",
+      "producer": "witnessops-proof-engine",
+      "required": true,
+      "description": "Machine-readable workflow comparison checks."
+    },
+    {
+      "path": "evidence/",
+      "role": "evidence_directory",
+      "producer": "client_or_fixture_source",
+      "required": true,
+      "description": "Source evidence artifacts referenced by evidence_manifest.json."
+    },
+    {
+      "path": "normalized/",
+      "role": "normalized_directory",
+      "producer": "witnessops-proof-engine_or_adapter",
+      "required": true,
+      "description": "Canonical normalized records used for comparison."
+    }
+  ],
+  "trust_boundaries": {
+    "producer": "witnessops-proof-engine creates receipt, manifest, comparison result, report, README, and initial verification_result.json.",
+    "independent_verifier": "witnessops-verifier independently verifies signature, manifest hash, artifact hashes, schema validation, and optional key registry trust.",
+    "contracts": "witnessops-contracts defines valid receipt, manifest, package index, and verifier-result shape.",
+    "key_registry": "witnessops-key-registry supplies governed public-key trust when provided."
+  }
+}
