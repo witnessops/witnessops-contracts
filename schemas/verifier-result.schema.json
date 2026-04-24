@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/verifier-result.schema.json",
+  "title": "WitnessOps Verifier Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "verifier_version",
+    "status",
+    "workflow_class",
+    "proof_run_id",
+    "checks",
+    "outcome",
+    "failure_states"
+  ],
+  "properties": {
+    "verifier_version": {
+      "type": "string",
+      "pattern": "^witnessops\\.verifier\\.v\\d+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["valid", "invalid", "incomplete", "unsupported"]
+    },
+    "workflow_class": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "proof_run_id": {
+      "type": "string",
+      "pattern": "^pr_[A-Za-z0-9_:-]+$"
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "receipt_signature",
+        "manifest_hash",
+        "artifact_hashes",
+        "schema_validation"
+      ],
+      "properties": {
+        "receipt_signature": { "$ref": "#/$defs/check_result" },
+        "manifest_hash": { "$ref": "#/$defs/check_result" },
+        "artifact_hashes": { "$ref": "#/$defs/check_result" },
+        "schema_validation": { "$ref": "#/$defs/check_result" }
+      }
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["pass", "partial", "fail", "inconclusive"]
+    },
+    "failure_states": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "check_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["passed", "failed", "skipped"]
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
