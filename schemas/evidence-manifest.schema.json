@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/evidence-manifest.schema.json",
+  "title": "WitnessOps Evidence Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["manifest_version", "workflow_class", "proof_run_id", "source_systems", "artifacts"],
+  "properties": {
+    "manifest_version": {
+      "type": "string",
+      "pattern": "^witnessops\\.evidence_manifest\\.v\\d+$"
+    },
+    "workflow_class": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "proof_run_id": {
+      "type": "string",
+      "pattern": "^pr_[A-Za-z0-9_:-]+$"
+    },
+    "source_systems": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_id", "artifact_type", "source_system", "path", "sha256"],
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "artifact_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_system": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}
