@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/receipt.schema.json",
+  "title": "WitnessOps Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "receipt_version",
+    "workflow_class",
+    "proof_run_id",
+    "result",
+    "claims",
+    "manifest_hash",
+    "signature"
+  ],
+  "properties": {
+    "receipt_version": {
+      "type": "string",
+      "pattern": "^witnessops\\.receipt\\.v\\d+$"
+    },
+    "workflow_class": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "proof_run_id": {
+      "type": "string",
+      "pattern": "^pr_[A-Za-z0-9_:-]+$"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "failure_states"],
+      "properties": {
+        "outcome": {
+          "type": "string",
+          "enum": ["pass", "partial", "fail", "inconclusive"]
+        },
+        "failure_states": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "status", "evidence_refs"],
+        "properties": {
+          "claim": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "partial", "failed", "inconclusive"]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "manifest_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "public_key_id", "signature"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["ed25519"]
+        },
+        "public_key_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
