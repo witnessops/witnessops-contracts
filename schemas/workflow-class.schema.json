@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/workflow-class.schema.json",
+  "title": "WitnessOps Workflow Class",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "workflow_class_id",
+    "version",
+    "status",
+    "name",
+    "purpose",
+    "scope",
+    "authority_gate",
+    "evidence_required",
+    "checks",
+    "outcomes",
+    "failure_states"
+  ],
+  "properties": {
+    "workflow_class_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "deprecated"]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["in_scope", "out_of_scope"],
+      "properties": {
+        "in_scope": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    },
+    "authority_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "authority_sources"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "authority_sources": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    },
+    "evidence_required": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string", "minLength": 1 },
+        "minItems": 1
+      },
+      "minProperties": 1
+    },
+    "checks": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "outcomes": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["pass", "partial", "fail", "inconclusive"] },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "failure_states": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}
