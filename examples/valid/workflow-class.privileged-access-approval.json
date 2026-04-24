@@ -1,0 +1,54 @@
+{
+  "workflow_class_id": "privileged_access_approval",
+  "version": "0.1.0",
+  "status": "draft",
+  "name": "Privileged Access Approval Proof Run",
+  "purpose": "Prove whether one privileged access event was approved, granted as approved, bounded by time, and removed or expired.",
+  "scope": {
+    "in_scope": [
+      "one privileged access event",
+      "one requester",
+      "one target system",
+      "one approved role",
+      "one approval window"
+    ],
+    "out_of_scope": [
+      "full IAM audit",
+      "full PAM implementation review",
+      "penetration testing",
+      "broad security maturity scoring"
+    ]
+  },
+  "authority_gate": {
+    "required": true,
+    "authority_sources": [
+      "approval ticket",
+      "approver role mapping",
+      "policy or control-owner mapping"
+    ]
+  },
+  "evidence_required": {
+    "request": ["requester identity", "requested role", "target system", "business reason"],
+    "approval": ["approver identity", "approval timestamp", "approved scope", "approved duration"],
+    "execution": ["granted role", "target system", "grant timestamp", "executing actor"],
+    "removal": ["expiry timestamp", "revocation record", "final role state"]
+  },
+  "checks": [
+    "approval_before_execution",
+    "requester_match",
+    "role_match",
+    "system_match",
+    "duration_match",
+    "removal_or_expiry_exists"
+  ],
+  "outcomes": ["pass", "partial", "fail", "inconclusive"],
+  "failure_states": [
+    "missing_authority",
+    "unauthorized_approver",
+    "approval_after_execution",
+    "scope_mismatch",
+    "duration_mismatch",
+    "missing_removal_proof",
+    "evidence_not_portable"
+  ]
+}
