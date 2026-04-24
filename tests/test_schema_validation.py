@@ -12,6 +12,7 @@ SCHEMA_FIXTURE_PAIRS = [
     ("receipt.schema.json", "receipt.sample.json"),
     ("verifier-result.schema.json", "verifier-result.sample.json"),
     ("failure-state.schema.json", "failure-state.sample.json"),
+    ("package-index.schema.json", "package-index.sample.json"),
 ]
 
 INVALID_FIXTURE_PAIRS = [
