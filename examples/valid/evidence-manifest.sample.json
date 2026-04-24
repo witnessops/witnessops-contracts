@@ -1,0 +1,22 @@
+{
+  "manifest_version": "witnessops.evidence_manifest.v0",
+  "workflow_class": "privileged_access_approval",
+  "proof_run_id": "pr_20260424_privileged_access_001",
+  "source_systems": ["servicenow", "microsoft_entra_pim"],
+  "artifacts": [
+    {
+      "artifact_id": "approval_record",
+      "artifact_type": "authority_approval",
+      "source_system": "servicenow",
+      "path": "evidence/approval/servicenow_approval_record.json",
+      "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "artifact_id": "execution_record",
+      "artifact_type": "access_grant",
+      "source_system": "microsoft_entra_pim",
+      "path": "evidence/execution/entra_pim_activation.json",
+      "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ]
+}
