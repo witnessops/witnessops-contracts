@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/failure-state.schema.json",
+  "title": "WitnessOps Failure State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "meaning", "severity", "proof_effect", "remediation"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "meaning": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["informational", "material", "blocking"]
+    },
+    "proof_effect": {
+      "type": "string",
+      "minLength": 1
+    },
+    "remediation": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
