@@ -1,0 +1,7 @@
+{
+  "id": "missing_removal_proof",
+  "meaning": "No portable evidence proves privileged access was removed or expired.",
+  "severity": "material",
+  "proof_effect": "prevents pass outcome",
+  "remediation": "Provide revocation, expiry, or final-state evidence from the privileged access system."
+}
