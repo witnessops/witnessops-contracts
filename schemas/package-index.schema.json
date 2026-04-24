@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/package-index.schema.json",
+  "title": "WitnessOps Package Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_index_version",
+    "workflow_class",
+    "proof_run_id",
+    "outcome",
+    "verification_status",
+    "verification_result_source",
+    "artifact_count",
+    "artifacts",
+    "trust_boundaries"
+  ],
+  "properties": {
+    "package_index_version": {
+      "type": "string",
+      "pattern": "^witnessops\\.package_index\\.v\\d+$"
+    },
+    "workflow_class": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "proof_run_id": {
+      "type": "string",
+      "pattern": "^pr_[A-Za-z0-9_:-]+$"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["pass", "partial", "fail", "inconclusive"]
+    },
+    "verification_status": {
+      "type": "string",
+      "enum": ["valid", "invalid", "incomplete", "unsupported"]
+    },
+    "verification_result_source": {
+      "type": "string",
+      "enum": [
+        "producer_side_until_replaced_by_witnessops_verifier",
+        "witnessops_verifier"
+      ]
+    },
+    "artifact_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "role", "producer", "required", "description"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "inventory",
+              "receipt",
+              "manifest",
+              "verification_result",
+              "comparison_result",
+              "presentation",
+              "public_key",
+              "evidence_directory",
+              "normalized_directory"
+            ]
+          },
+          "producer": {
+            "type": "string",
+            "enum": [
+              "witnessops-proof-engine",
+              "witnessops-proof-engine_or_witnessops-verifier",
+              "witnessops-proof-engine_or_adapter",
+              "client_or_fixture_source"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "trust_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["producer", "independent_verifier", "contracts", "key_registry"],
+      "properties": {
+        "producer": { "type": "string", "minLength": 1 },
+        "independent_verifier": { "type": "string", "minLength": 1 },
+        "contracts": { "type": "string", "minLength": 1 },
+        "key_registry": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
