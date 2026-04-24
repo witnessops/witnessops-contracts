@@ -1,0 +1,6 @@
+{
+  "workflow_class_id": "privileged_access_approval",
+  "version": "0.1.0",
+  "status": "draft",
+  "name": "Privileged Access Approval Proof Run"
+}
