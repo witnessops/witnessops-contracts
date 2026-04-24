@@ -1,0 +1,22 @@
+{
+  "receipt_version": "witnessops.receipt.v0",
+  "workflow_class": "privileged_access_approval",
+  "proof_run_id": "pr_20260424_privileged_access_001",
+  "result": {
+    "outcome": "pass",
+    "failure_states": []
+  },
+  "claims": [
+    {
+      "claim": "approval_preceded_execution",
+      "status": "passed",
+      "evidence_refs": ["approval_record", "execution_record"]
+    }
+  ],
+  "manifest_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "signature": {
+    "algorithm": "ed25519",
+    "public_key_id": "witnessops_key_001",
+    "signature": "sample_signature_not_for_production"
+  }
+}
