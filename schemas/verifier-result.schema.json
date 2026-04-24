@@ -35,12 +35,14 @@
       "additionalProperties": false,
       "required": [
         "receipt_signature",
+        "key_registry",
         "manifest_hash",
         "artifact_hashes",
         "schema_validation"
       ],
       "properties": {
         "receipt_signature": { "$ref": "#/$defs/check_result" },
+        "key_registry": { "$ref": "#/$defs/check_result" },
         "manifest_hash": { "$ref": "#/$defs/check_result" },
         "artifact_hashes": { "$ref": "#/$defs/check_result" },
         "schema_validation": { "$ref": "#/$defs/check_result" }
