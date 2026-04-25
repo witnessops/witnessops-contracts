@@ -68,6 +68,31 @@
         }
       }
     },
+    "execution_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed_tools", "allowed_command_templates", "forbidden_by_default"],
+      "properties": {
+        "allowed_tools": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "allowed_command_templates": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "forbidden_by_default": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
     "evidence_required": {
       "type": "object",
       "additionalProperties": {
@@ -85,7 +110,7 @@
     },
     "outcomes": {
       "type": "array",
-      "items": { "type": "string", "enum": ["pass", "partial", "fail", "inconclusive"] },
+      "items": { "type": "string", "enum": ["pass", "partial", "fail", "inconclusive", "blocked"] },
       "minItems": 4,
       "uniqueItems": true
     },
