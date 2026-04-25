@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 SCHEMA_FIXTURE_PAIRS = [
     ("workflow-class.schema.json", "workflow-class.privileged-access-approval.json"),
+    ("workflow-class.schema.json", "workflow-class.external-ad-exposure-proof-run.json"),
     ("evidence-manifest.schema.json", "evidence-manifest.sample.json"),
     ("receipt.schema.json", "receipt.sample.json"),
     ("verifier-result.schema.json", "verifier-result.sample.json"),
@@ -17,6 +18,7 @@ SCHEMA_FIXTURE_PAIRS = [
 
 INVALID_FIXTURE_PAIRS = [
     ("workflow-class.schema.json", "workflow-class.missing-required-fields.json"),
+    ("workflow-class.schema.json", "workflow-class.execution-boundary-missing-templates.json"),
     ("evidence-manifest.schema.json", "evidence-manifest.missing-artifact-hash.json"),
     ("receipt.schema.json", "receipt.missing-signature.json"),
     ("verifier-result.schema.json", "verifier-result.invalid-outcome.json"),

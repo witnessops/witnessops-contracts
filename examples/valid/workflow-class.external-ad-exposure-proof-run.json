@@ -1,0 +1,90 @@
+{
+  "workflow_class_id": "external_ad_exposure_proof_run",
+  "version": "0.1.0",
+  "status": "draft",
+  "name": "External + AD Exposure Proof Run",
+  "purpose": "Prove what was approved, what exposure checks ran, what evidence was captured, what was intentionally not attempted, and whether the resulting proof package can be independently checked.",
+  "scope": {
+    "in_scope": [
+      "one approved external domain set",
+      "one approved web target list derived from scope",
+      "one approved SMB or AD target set",
+      "passive subdomain enumeration",
+      "approved active web content discovery",
+      "approved SMB share exposure mapping with approved credentials"
+    ],
+    "out_of_scope": [
+      "exploitation",
+      "denial-of-service testing",
+      "credential dumping",
+      "remote command execution",
+      "persistence",
+      "broad internal penetration testing",
+      "broad security maturity scoring",
+      "account-authentication testing unless separately authorized by explicit gate"
+    ]
+  },
+  "authority_gate": {
+    "required": true,
+    "authority_sources": [
+      "signed or recorded scope approval",
+      "rules of engagement",
+      "approved target list",
+      "approved test window",
+      "lockout policy for any authenticated checks",
+      "explicit credential-testing approval when applicable"
+    ]
+  },
+  "execution_boundary": {
+    "allowed_tools": ["amass", "feroxbuster", "crackmapexec"],
+    "allowed_command_templates": [
+      "amass_passive_subdomain_inventory",
+      "amass_active_subdomain_inventory",
+      "feroxbuster_bounded_web_discovery",
+      "crackmapexec_smb_share_mapping"
+    ],
+    "forbidden_by_default": [
+      "credential_dumping",
+      "remote_command_execution",
+      "account_authentication_testing",
+      "recursive_sensitive_share_spidering",
+      "out_of_scope_scanning"
+    ]
+  },
+  "evidence_required": {
+    "authority": ["scope approval", "rules of engagement", "approved targets", "approved test window"],
+    "command_plan": ["tool names", "command template identifiers", "approved targets per command", "output paths"],
+    "execution": ["recorded commands", "tool output files", "operator observations", "stop-condition log"],
+    "safety": ["lockout policy review", "credential-testing authorization status", "not-performed statement"],
+    "findings": ["finding register", "evidence references", "remediation recommendations"],
+    "proof": ["evidence manifest", "run receipt", "verifier result"]
+  },
+  "checks": [
+    "scope_approval_exists",
+    "targets_within_scope",
+    "active_scan_authorized",
+    "lockout_policy_before_auth",
+    "command_templates_allowed",
+    "forbidden_actions_absent",
+    "outputs_hashable",
+    "findings_reference_evidence",
+    "not_performed_statement_exists",
+    "verifier_result_exists"
+  ],
+  "outcomes": ["pass", "partial", "fail", "inconclusive", "blocked"],
+  "failure_states": [
+    "missing_authority",
+    "out_of_scope_target",
+    "active_scan_without_approval",
+    "lockout_policy_missing",
+    "credential_testing_not_authorized",
+    "forbidden_action_requested",
+    "command_template_not_allowed",
+    "missing_evidence_hash",
+    "finding_without_evidence",
+    "evidence_not_portable",
+    "verifier_result_missing",
+    "customer_stop_requested",
+    "target_instability_observed"
+  ]
+}

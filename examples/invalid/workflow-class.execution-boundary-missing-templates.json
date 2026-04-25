@@ -1,0 +1,26 @@
+{
+  "workflow_class_id": "external_ad_exposure_proof_run",
+  "version": "0.1.0",
+  "status": "draft",
+  "name": "External + AD Exposure Proof Run",
+  "purpose": "Invalid fixture missing required execution boundary command templates.",
+  "scope": {
+    "in_scope": ["one approved external domain set"],
+    "out_of_scope": ["exploitation"]
+  },
+  "authority_gate": {
+    "required": true,
+    "authority_sources": ["signed or recorded scope approval"]
+  },
+  "execution_boundary": {
+    "allowed_tools": ["amass", "feroxbuster", "crackmapexec"],
+    "forbidden_by_default": ["out_of_scope_scanning"]
+  },
+  "evidence_required": {
+    "authority": ["scope approval"],
+    "execution": ["recorded commands"]
+  },
+  "checks": ["scope_approval_exists"],
+  "outcomes": ["pass", "partial", "fail", "inconclusive", "blocked"],
+  "failure_states": ["missing_authority"]
+}
