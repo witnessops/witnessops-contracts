@@ -1,0 +1,27 @@
+{
+  "receipt_version": "witnessops.receipt.v0",
+  "workflow_class": "privileged_access_approval_synthetic_public_proof_run",
+  "proof_run_id": "pr_20260426_synthetic_access_approval_public_prohibited_action",
+  "result": {
+    "outcome": "pass",
+    "failure_states": []
+  },
+  "claims": [
+    {
+      "claim": "prohibited_actions_absent",
+      "status": "passed",
+      "evidence_refs": ["execution_log"]
+    },
+    {
+      "claim": "write_action_observed",
+      "status": "passed",
+      "evidence_refs": ["execution_log"]
+    }
+  ],
+  "manifest_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "signature": {
+    "algorithm": "ed25519",
+    "public_key_id": "synthetic_public_proof_run_key_placeholder",
+    "signature": "sample_signature_not_for_production"
+  }
+}
