@@ -1,0 +1,86 @@
+{
+  "workflow_class_id": "privileged_access_approval_synthetic_public_proof_run",
+  "version": "0.1.0",
+  "status": "draft",
+  "name": "Synthetic Public Privileged Access Approval Proof Run",
+  "purpose": "Define the contract shape for a founder-safe synthetic privileged-access approval proof run that demonstrates approval-gated execution without production, customer, compliance, endorsement, or private-access-status claims.",
+  "scope": {
+    "in_scope": [
+      "one synthetic privileged access request",
+      "one synthetic approval record",
+      "one read-only placeholder execution",
+      "one portable evidence manifest",
+      "one receipt-shaped artifact",
+      "one verifier result or explicit verifier status"
+    ],
+    "out_of_scope": [
+      "production privileged access",
+      "customer deployment",
+      "customer control effectiveness",
+      "compliance certification",
+      "OpenAI endorsement or partnership",
+      "private Codex Security access status",
+      "live runtime mutation"
+    ]
+  },
+  "authority_gate": {
+    "required": true,
+    "authority_sources": [
+      "synthetic access request fixture",
+      "synthetic approval fixture",
+      "witnessops-os operator lane",
+      "no-real-identifiers review checklist"
+    ]
+  },
+  "execution_boundary": {
+    "allowed_tools": [
+      "synthetic_placeholder_executor"
+    ],
+    "allowed_command_templates": [
+      "synthetic_read_only_placeholder_snapshot"
+    ],
+    "forbidden_by_default": [
+      "live_system_write",
+      "delete_action",
+      "privilege_escalation",
+      "secret_access",
+      "outbound_exfiltration",
+      "real_client_data_use",
+      "live_cloud_runtime_mutation",
+      "private_approval_artifact_publication",
+      "endorsement_or_certification_claim"
+    ]
+  },
+  "evidence_required": {
+    "request": ["synthetic requester", "placeholder resource", "request timestamp"],
+    "approval": ["synthetic approver", "approval timestamp", "approved scope", "approval record id"],
+    "execution": ["read-only placeholder action", "execution timestamp", "execution log", "output snapshot"],
+    "boundary": ["public claim boundary", "not-proven statement", "no-real-identifiers review"],
+    "proof": ["manifest reference", "receipt reference", "verifier status"]
+  },
+  "checks": [
+    "synthetic_scope_declared",
+    "approval_before_execution",
+    "placeholder_identifiers_only",
+    "read_only_action_only",
+    "prohibited_actions_absent",
+    "required_evidence_present",
+    "manifest_hashes_present",
+    "public_claim_boundary_present",
+    "verifier_status_explicit"
+  ],
+  "outcomes": ["pass", "partial", "fail", "inconclusive", "blocked"],
+  "failure_states": [
+    "missing_synthetic_authority",
+    "approval_after_execution",
+    "missing_approval_record",
+    "real_identifier_present",
+    "prohibited_action_observed",
+    "evidence_file_missing",
+    "manifest_hash_mismatch",
+    "verifier_status_missing",
+    "public_claim_overreach",
+    "private_access_status_exposed",
+    "evidence_not_portable"
+  ]
+}
