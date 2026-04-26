@@ -1,0 +1,29 @@
+{
+  "manifest_version": "witnessops.evidence_manifest.v0",
+  "workflow_class": "privileged_access_approval_synthetic_public_proof_run",
+  "proof_run_id": "pr_20260426_synthetic_access_approval_public_missing_approval",
+  "source_systems": ["synthetic_fixture"],
+  "artifacts": [
+    {
+      "artifact_id": "access_request",
+      "artifact_type": "synthetic_access_request",
+      "source_system": "synthetic_fixture",
+      "path": "EVIDENCE/access_request.json",
+      "sha256": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "artifact_id": "execution_log",
+      "artifact_type": "synthetic_execution_log",
+      "source_system": "synthetic_fixture",
+      "path": "EVIDENCE/execution_log.jsonl",
+      "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    },
+    {
+      "artifact_id": "boundary_and_failures",
+      "artifact_type": "public_boundary_statement",
+      "source_system": "synthetic_fixture",
+      "path": "BOUNDARY_AND_FAILURES.md",
+      "sha256": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    }
+  ]
+}
