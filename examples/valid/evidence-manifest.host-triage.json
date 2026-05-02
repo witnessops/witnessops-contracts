@@ -1,0 +1,91 @@
+{
+  "manifest_version": "witnessops.evidence_manifest.v1",
+  "workflow_class": "host_triage_evidence_collection",
+  "proof_run_id": "pr_20260502_host_triage_001",
+  "source_systems": ["witnessops_host_triage_collector"],
+  "authority": {
+    "authorization_id": "AUTH-2026-0001",
+    "case_id": "CASE-2026-0001",
+    "operator_id": "op_alice",
+    "collection_profile_id": "baseline_host_triage_v1",
+    "authorization_window": {
+      "start_utc": "2026-05-02T10:00:00Z",
+      "end_utc": "2026-05-02T11:00:00Z"
+    }
+  },
+  "target": {
+    "claimed_hostname": "HOST-1234",
+    "asset_id": "ASSET-1234",
+    "os_family": "windows"
+  },
+  "collector": {
+    "name": "witnessops-host-triage-collector",
+    "version": "0.1.0",
+    "hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "signature_key_id": "wo-collector-signing-2026-01",
+    "signature_status": "valid"
+  },
+  "launcher": {
+    "type": "manual_terminal",
+    "identifier": "operator-present-terminal",
+    "boundary": "operator-present launcher only; launcher is not proof authority"
+  },
+  "collection_profile": {
+    "profile_id": "baseline_host_triage_v1",
+    "prohibited_classes": [
+      "credentials",
+      "browser_cookies",
+      "oauth_tokens",
+      "private_keys",
+      "password_manager_data",
+      "screenshots",
+      "clipboard",
+      "full_user_documents",
+      "full_memory_dump"
+    ]
+  },
+  "declared_exclusions": [
+    "credentials",
+    "browser_cookies",
+    "oauth_tokens",
+    "private_keys",
+    "password_manager_data",
+    "screenshots",
+    "clipboard",
+    "full_user_documents",
+    "full_memory_dump"
+  ],
+  "declared_side_effects": [
+    "terminal process launched",
+    "collector process executed",
+    "temporary output directory created",
+    "event logs may contain execution records"
+  ],
+  "host_clock": {
+    "trust_status": "unknown",
+    "observed_timezone": "Europe/Dublin",
+    "notes": "Host clock is observed evidence, not authoritative time."
+  },
+  "artifacts": [
+    {
+      "artifact_id": "host_identity",
+      "artifact_type": "host_identity",
+      "artifact_class": "host_identity",
+      "source_system": "witnessops_host_triage_collector",
+      "path": "artifacts/host_identity.json",
+      "sha256": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "collector_method": "os_identity_enumeration",
+      "sensitivity": "low"
+    },
+    {
+      "artifact_id": "process_state",
+      "artifact_type": "process_state",
+      "artifact_class": "process_state",
+      "source_system": "witnessops_host_triage_collector",
+      "path": "artifacts/process_state.json",
+      "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "collector_method": "os_process_enumeration",
+      "sensitivity": "medium"
+    }
+  ]
+}
