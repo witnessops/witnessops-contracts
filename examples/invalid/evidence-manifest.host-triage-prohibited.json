@@ -1,0 +1,52 @@
+{
+  "manifest_version": "witnessops.evidence_manifest.v1",
+  "workflow_class": "host_triage_evidence_collection",
+  "proof_run_id": "pr_20260502_host_triage_invalid_001",
+  "source_systems": ["witnessops_host_triage_collector"],
+  "authority": {
+    "authorization_id": "AUTH-2026-0001",
+    "case_id": "CASE-2026-0001",
+    "operator_id": "op_alice",
+    "collection_profile_id": "baseline_host_triage_v1",
+    "authorization_window": {
+      "start_utc": "2026-05-02T10:00:00Z",
+      "end_utc": "2026-05-02T11:00:00Z"
+    }
+  },
+  "target": {
+    "claimed_hostname": "HOST-1234",
+    "asset_id": "ASSET-1234"
+  },
+  "collector": {
+    "name": "witnessops-host-triage-collector",
+    "version": "0.1.0",
+    "hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "signature_key_id": "wo-collector-signing-2026-01",
+    "signature_status": "valid"
+  },
+  "launcher": {
+    "type": "manual_terminal",
+    "boundary": "operator-present"
+  },
+  "collection_profile": {
+    "profile_id": "baseline_host_triage_v1",
+    "prohibited_classes": ["credentials"]
+  },
+  "declared_exclusions": ["credentials"],
+  "declared_side_effects": ["terminal launch"],
+  "host_clock": {
+    "trust_status": "unknown"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "cookies",
+      "artifact_type": "browser",
+      "artifact_class": "browser_cookies",
+      "source_system": "witnessops_host_triage_collector",
+      "path": "artifacts/cookies.json",
+      "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "collector_method": "browser_dump",
+      "sensitivity": "high"
+    }
+  ]
+}
