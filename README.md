@@ -7,6 +7,7 @@ This repository defines the schemas and validation contracts that decide whether
 ## Authority boundary
 
 This repo defines validity. It does not execute proof runs, normalize client evidence, sign receipts, or present marketing copy.
+CI evidence contracts define workflow-run evidence structure only. They do not verify runner integrity, sign receipts, or prove semantic correctness of workflow outputs.
 
 | Concern | Owned here? | Notes |
 |---|---:|---|
@@ -30,6 +31,8 @@ witnessops-contracts/
     evidence-manifest.schema.json
     receipt.schema.json
     verifier-result.schema.json
+    ci-evidence-bundle.schema.json
+    ci-verifier-result.schema.json
     failure-state.schema.json
   examples/
     valid/

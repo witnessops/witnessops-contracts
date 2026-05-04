@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/ci-verifier-result.schema.json",
+  "title": "WitnessOps CI Verifier Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "verifier_version",
+    "status",
+    "bundle",
+    "checks",
+    "failure_states"
+  ],
+  "properties": {
+    "verifier_version": {
+      "type": "string",
+      "const": "witnessops.ci_evidence_verifier.v1"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "valid",
+        "invalid",
+        "incomplete",
+        "unsupported"
+      ]
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo",
+        "commit_sha",
+        "workflow",
+        "run_id",
+        "run_attempt",
+        "job"
+      ],
+      "properties": {
+        "repo": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "commit_sha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "workflow": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "run_attempt": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "job": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_validation",
+        "manifest_file",
+        "declared_files",
+        "file_hashes",
+        "untracked_files"
+      ],
+      "properties": {
+        "schema_validation": {
+          "$ref": "#/$defs/check_result"
+        },
+        "manifest_file": {
+          "$ref": "#/$defs/check_result"
+        },
+        "declared_files": {
+          "$ref": "#/$defs/check_result"
+        },
+        "file_hashes": {
+          "$ref": "#/$defs/check_result"
+        },
+        "untracked_files": {
+          "$ref": "#/$defs/check_result"
+        }
+      }
+    },
+    "failure_states": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "check_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "failed",
+            "skipped"
+          ]
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

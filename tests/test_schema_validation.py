@@ -33,6 +33,8 @@ SCHEMA_FIXTURE_PAIRS = [
     ("verifier-result.schema.json", "verifier-result.synthetic-access-approval-public-proof-run.json"),
     ("failure-state.schema.json", "failure-state.sample.json"),
     ("package-index.schema.json", "package-index.sample.json"),
+    ("ci-evidence-bundle.schema.json", "ci-evidence-bundle.valid.json"),
+    ("ci-verifier-result.schema.json", "ci-verifier-result.valid.json"),
 ]
 
 INVALID_FIXTURE_PAIRS = [
@@ -41,6 +43,10 @@ INVALID_FIXTURE_PAIRS = [
     ("evidence-manifest.schema.json", "evidence-manifest.missing-artifact-hash.json"),
     ("receipt.schema.json", "receipt.missing-signature.json"),
     ("verifier-result.schema.json", "verifier-result.invalid-outcome.json"),
+    ("ci-evidence-bundle.schema.json", "ci-evidence-bundle.missing-hash.json"),
+    ("ci-evidence-bundle.schema.json", "ci-evidence-bundle.bad-sha.json"),
+    ("ci-evidence-bundle.schema.json", "ci-evidence-bundle.untracked-file-policy-invalid.json"),
+    ("ci-verifier-result.schema.json", "ci-verifier-result.invalid-status.json"),
 ]
 
 
@@ -132,3 +138,10 @@ def test_synthetic_access_approval_prohibited_action_fails_semantic_contract():
 def test_synthetic_access_approval_manifest_hash_mismatch_fails_semantic_contract():
     receipt = invalid_fixture("synthetic-access-approval.manifest-hash-mismatch.json")
     assert receipt["manifest_hash"] != SYNTHETIC_EXPECTED_MANIFEST_HASH
+
+
+def test_ci_evidence_bundle_valid_fixture_declares_deny_untracked_policy():
+    bundle = valid_fixture("ci-evidence-bundle.valid.json")
+    assert bundle["untracked_file_policy"]["mode"] == "deny"
+    assert bundle["untracked_file_policy"]["allowlist"] == []
+    assert bundle["untracked_files"] == []
