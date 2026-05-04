@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/ci-evidence-bundle.schema.json",
+  "title": "WitnessOps CI Evidence Bundle",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundle_version",
+    "producer",
+    "artifacts",
+    "logs",
+    "untracked_file_policy",
+    "untracked_files",
+    "status"
+  ],
+  "properties": {
+    "bundle_version": {
+      "type": "string",
+      "const": "witnessops.ci_evidence_bundle.v1"
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo",
+        "commit_sha",
+        "workflow",
+        "run_id",
+        "run_attempt",
+        "job"
+      ],
+      "properties": {
+        "repo": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+        },
+        "commit_sha": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "workflow": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "run_attempt": {
+          "type": "string",
+          "pattern": "^[0-9]+$"
+        },
+        "job": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file_record"
+      },
+      "uniqueItems": true
+    },
+    "logs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/file_record"
+      },
+      "uniqueItems": true
+    },
+    "untracked_file_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "allowlist"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "deny",
+            "allowlisted"
+          ]
+        },
+        "allowlist": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relative_bundle_path"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "untracked_files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relative_bundle_path"
+      },
+      "uniqueItems": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "execution_complete",
+        "execution_failed",
+        "evidence_incomplete"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "untracked_file_policy": {
+            "properties": {
+              "mode": {
+                "const": "deny"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          }
+        },
+        "required": [
+          "untracked_file_policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "untracked_file_policy": {
+            "properties": {
+              "allowlist": {
+                "maxItems": 0
+              }
+            }
+          },
+          "untracked_files": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "untracked_file_policy": {
+            "properties": {
+              "mode": {
+                "const": "allowlisted"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          }
+        },
+        "required": [
+          "untracked_file_policy"
+        ]
+      },
+      "then": {
+        "properties": {
+          "untracked_file_policy": {
+            "properties": {
+              "allowlist": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "relative_bundle_path": {
+      "type": "string",
+      "pattern": "^(artifacts|logs)/[A-Za-z0-9._/-]+$",
+      "not": {
+        "pattern": "(^|/)\\.\\.(/|$)"
+      }
+    },
+    "file_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/relative_bundle_path"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        }
+      }
+    }
+  }
+}

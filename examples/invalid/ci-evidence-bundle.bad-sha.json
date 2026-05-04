@@ -1,0 +1,31 @@
+{
+  "bundle_version": "witnessops.ci_evidence_bundle.v1",
+  "producer": {
+    "repo": "witnessops/witnessops-offsec-orchestration",
+    "commit_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "workflow": "Orchestration API Contract",
+    "run_id": "1234567890",
+    "run_attempt": "1",
+    "job": "orchestration-producer"
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/orchestration-success.json",
+      "sha256": "sha256:not-a-real-hash",
+      "role": "contract_output"
+    }
+  ],
+  "logs": [
+    {
+      "path": "logs/orchestration-success.log",
+      "sha256": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "role": "execution_log"
+    }
+  ],
+  "untracked_file_policy": {
+    "mode": "deny",
+    "allowlist": []
+  },
+  "untracked_files": [],
+  "status": "execution_complete"
+}

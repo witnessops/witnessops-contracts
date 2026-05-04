@@ -1,0 +1,30 @@
+{
+  "verifier_version": "witnessops.ci_evidence_verifier.v1",
+  "status": "verified",
+  "bundle": {
+    "repo": "witnessops/witnessops-offsec-orchestration",
+    "commit_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "workflow": "Orchestration API Contract",
+    "run_id": "1234567890",
+    "run_attempt": "1",
+    "job": "orchestration-producer"
+  },
+  "checks": {
+    "schema_validation": {
+      "status": "passed"
+    },
+    "manifest_file": {
+      "status": "passed"
+    },
+    "declared_files": {
+      "status": "passed"
+    },
+    "file_hashes": {
+      "status": "passed"
+    },
+    "untracked_files": {
+      "status": "passed"
+    }
+  },
+  "failure_states": []
+}

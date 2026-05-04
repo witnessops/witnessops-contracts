@@ -12,6 +12,8 @@ proof run schema
 evidence manifest schema
 receipt schema
 verifier result schema
+ci evidence bundle schema
+ci verifier result schema
 failure-state schema
 valid and invalid schema fixtures
 schema validation CI
@@ -37,6 +39,8 @@ schemas/
   evidence-manifest.schema.json
   receipt.schema.json
   verifier-result.schema.json
+  ci-evidence-bundle.schema.json
+  ci-verifier-result.schema.json
   failure-state.schema.json
 
 examples/
