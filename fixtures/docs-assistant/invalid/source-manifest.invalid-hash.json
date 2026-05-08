@@ -1,0 +1,12 @@
+{
+  "source_id": "witnessops.com/docs/verify",
+  "commit_sha_or_crawl_timestamp": "not-a-sha-or-date",
+  "sha256": "md5:invalid",
+  "title": "WitnessOps Verify Docs",
+  "anchors": [
+    "/verify#how-it-works"
+  ],
+  "public_private_classification": "open",
+  "inclusion_reason": "Invalid for schema validation tests",
+  "exclusion_reason": "Not in scope"
+}

@@ -1,0 +1,23 @@
+{
+  "eval_id": "docs-assistant-contract-v1-smoke",
+  "status": "pass",
+  "tested_at": "2026-05-08T10:00:00Z",
+  "fixtures": [
+    "answer.valid.json",
+    "source-manifest.valid.json",
+    "eval-result.valid.json"
+  ],
+  "results": [
+    {
+      "fixture": "answer.valid.json",
+      "status": "pass",
+      "reason": "valid structure"
+    },
+    {
+      "fixture": "source-manifest.valid.json",
+      "status": "pass",
+      "reason": "valid structure"
+    }
+  ],
+  "unsupported_claims": []
+}

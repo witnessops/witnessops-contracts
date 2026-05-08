@@ -1,0 +1,16 @@
+{
+  "answer_status": "supported_by_docs",
+  "citations": [
+    {
+      "anchor": "/docs",
+      "source_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    }
+  ],
+  "documented_facts": [
+    "Citation objects must include a source field."
+  ],
+  "inference": [],
+  "unsupported_reason": "",
+  "human_review_required": false,
+  "not_proven": []
+}

@@ -1,0 +1,25 @@
+{
+  "answer_status": "supported_by_docs",
+  "citations": [
+    {
+      "source": "https://witnessops.com/docs/verify",
+      "anchor": "/verify#artifacts",
+      "source_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+      "source": "https://github.com/witnessops/witnessops-web",
+      "anchor": "/docs/docs-assistant/DOCS_ASSISTANT_SOURCE_AUTHORITY.md",
+      "source_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  ],
+  "documented_facts": [
+    "WitnessOps claims are surfaced through a source-backed docs assistant boundary.",
+    "The assistant must separate documented facts from inference."
+  ],
+  "inference": [
+    "The user likely intends a bounded docs-only answer format."
+  ],
+  "unsupported_reason": "",
+  "human_review_required": false,
+  "not_proven": []
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/docs-assistant/answer.schema.json",
+  "title": "WitnessOps Docs Assistant Answer Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "answer_status",
+    "citations",
+    "documented_facts",
+    "inference",
+    "unsupported_reason",
+    "human_review_required",
+    "not_proven"
+  ],
+  "properties": {
+    "answer_status": {
+      "type": "string",
+      "enum": [
+        "supported_by_docs",
+        "partially_supported",
+        "not_found_in_docs",
+        "needs_human_review",
+        "cannot_claim"
+      ]
+    },
+    "citations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/citation"
+      }
+    },
+    "documented_facts": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "inference": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unsupported_reason": {
+      "type": "string",
+      "default": "",
+      "minLength": 0
+    },
+    "human_review_required": {
+      "type": "boolean"
+    },
+    "not_proven": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Source URL or repository path used as evidence reference."
+        },
+        "anchor": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Section anchor, header id, or route fragment."
+        },
+        "source_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

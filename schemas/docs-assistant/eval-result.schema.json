@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/docs-assistant/eval-result.schema.json",
+  "title": "WitnessOps Docs Assistant Evaluation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eval_id",
+    "status",
+    "tested_at",
+    "fixtures",
+    "results",
+    "unsupported_claims"
+  ],
+  "properties": {
+    "eval_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "error"
+      ]
+    },
+    "tested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fixtures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture",
+          "status",
+          "reason"
+        ],
+        "properties": {
+          "fixture": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pass", "fail"]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "unsupported_claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

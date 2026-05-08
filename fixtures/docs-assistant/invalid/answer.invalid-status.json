@@ -1,0 +1,17 @@
+{
+  "answer_status": "guaranteed_safe",
+  "citations": [
+    {
+      "source": "https://witnessops.com/docs",
+      "anchor": "/docs",
+      "source_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "documented_facts": [
+    "Not a valid status in the schema."
+  ],
+  "inference": [],
+  "unsupported_reason": "",
+  "human_review_required": false,
+  "not_proven": []
+}
