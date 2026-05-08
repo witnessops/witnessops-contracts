@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/docs-assistant/source-manifest.schema.json",
+  "title": "WitnessOps Docs Assistant Source Manifest Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_id",
+    "commit_sha_or_crawl_timestamp",
+    "sha256",
+    "title",
+    "anchors",
+    "public_private_classification",
+    "inclusion_reason",
+    "exclusion_reason"
+  ],
+  "properties": {
+    "source_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Public URL or repository path for the source."
+    },
+    "commit_sha_or_crawl_timestamp": {
+      "type": "string",
+      "minLength": 1,
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        {
+          "format": "date-time"
+        }
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "anchors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "public_private_classification": {
+      "type": "string",
+      "enum": [
+        "public",
+        "private"
+      ]
+    },
+    "inclusion_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exclusion_reason": {
+      "type": "string",
+      "minLength": 0
+    }
+  }
+}

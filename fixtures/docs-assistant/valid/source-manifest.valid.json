@@ -1,0 +1,13 @@
+{
+  "source_id": "witnessops.com/docs/verify",
+  "commit_sha_or_crawl_timestamp": "2026-05-07T12:00:00Z",
+  "sha256": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "title": "WitnessOps Verify Docs",
+  "anchors": [
+    "/verify#how-it-works",
+    "/verify#evidence"
+  ],
+  "public_private_classification": "public",
+  "inclusion_reason": "Inclusion for docs assistant source authority",
+  "exclusion_reason": ""
+}

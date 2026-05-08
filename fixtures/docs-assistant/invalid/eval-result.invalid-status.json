@@ -1,0 +1,18 @@
+{
+  "eval_id": "",
+  "status": "unknown",
+  "tested_at": "not-a-date",
+  "fixtures": [
+    "answer.valid.json"
+  ],
+  "results": [
+    {
+      "fixture": "answer.valid.json",
+      "status": "pass",
+      "reason": "valid structure"
+    }
+  ],
+  "unsupported_claims": [
+    "out-of-scope"
+  ]
+}
