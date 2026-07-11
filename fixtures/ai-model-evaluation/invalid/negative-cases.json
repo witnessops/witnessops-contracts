@@ -1,0 +1,134 @@
+{
+  "fixture_version": "witnessops.ai_model_evaluation_negative_mutations.v1",
+  "base_fixture": "valid/evidence-packet.draft.valid.json",
+  "cases": [
+    {
+      "case_id": "draft_execution_forbidden",
+      "description": "A draft packet cannot contain an execution run.",
+      "operation": "append",
+      "path": "/runs",
+      "value": {
+        "run_id": "RUN-0001",
+        "status": "COMPLETED",
+        "authority_ref": "AUTH-0001",
+        "plan_id": "PLAN-0001",
+        "plan_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "model_id": "MODEL-0001",
+        "environment_id": "ENV-0001",
+        "tool_refs": [
+          "TOOL-0001"
+        ],
+        "operator_ref": "IDENTITY-0001",
+        "started_at": "2026-07-10T19:01:00Z",
+        "ended_at": "2026-07-10T19:02:00Z",
+        "input_refs": [
+          "INPUT-0001"
+        ],
+        "output_refs": [
+          "OUTPUT-0001"
+        ],
+        "log_refs": [
+          "LOG-0001"
+        ],
+        "deviations": []
+      },
+      "expected_error_path": "/runs",
+      "expected_validator": "maxItems"
+    },
+    {
+      "case_id": "commission_eligibility_without_evidence",
+      "description": "Commission-work eligibility cannot be marked established without evidence references.",
+      "operation": "replace",
+      "path": "/boundary/external_claims/commission_work_eligibility/status",
+      "value": "ESTABLISHED_BY_EVIDENCE",
+      "expected_error_path": "/boundary/external_claims/commission_work_eligibility/evidence_refs",
+      "expected_validator": "minItems"
+    },
+    {
+      "case_id": "independence_corroborated_without_evidence",
+      "description": "Independence cannot be marked corroborated without evidence and an independent reviewer.",
+      "operation": "replace",
+      "path": "/evaluator/independence/corroboration_status",
+      "value": "CORROBORATED",
+      "expected_error_path": "/evaluator/independence/corroborating_evidence_refs",
+      "expected_validator": "minItems"
+    },
+    {
+      "case_id": "declared_independence_without_declaration",
+      "description": "An independence declaration status requires a declaration artifact.",
+      "operation": "replace",
+      "path": "/evaluator/independence/declaration_status",
+      "value": "DECLARED_INDEPENDENT",
+      "expected_error_path": "/evaluator/independence/declaration_artifact_ref"
+    },
+    {
+      "case_id": "frozen_plan_without_freeze_record",
+      "description": "A frozen plan requires a plan artifact, hash, timestamp, freezing identity, and criteria.",
+      "operation": "replace",
+      "path": "/evaluation_plan/status",
+      "value": "FROZEN",
+      "expected_error_path": "/evaluation_plan/plan_hash"
+    },
+    {
+      "case_id": "complete_reconstruction_without_receipt",
+      "description": "Independent reconstruction cannot be complete without verifier identity, independence evidence, and a receipt.",
+      "operation": "replace",
+      "path": "/independent_reconstruction/status",
+      "value": "COMPLETE",
+      "expected_error_path": "/independent_reconstruction/verification_receipt_ref"
+    },
+    {
+      "case_id": "authorized_state_with_unresolved_authority",
+      "description": "AUTHORIZED_NOT_STARTED is rejected while authority remains unresolved.",
+      "operation": "replace",
+      "path": "/packet_state",
+      "value": "AUTHORIZED_NOT_STARTED",
+      "expected_error_path": "/authority/status",
+      "expected_validator": "const"
+    },
+    {
+      "case_id": "public_release_without_admitted_controls",
+      "description": "Public release cannot be authorized while disclosure controls are unresolved or revoked.",
+      "operation": "replace",
+      "path": "/disclosure_controls/public_release_authorized",
+      "value": true,
+      "expected_error_path": "/disclosure_controls/public_release_authorized",
+      "expected_validator": "const"
+    },
+    {
+      "case_id": "malformed_manifest_hash",
+      "description": "Manifest hashes must use the canonical lowercase SHA-256 form.",
+      "operation": "append",
+      "path": "/manifest",
+      "value": {
+        "artifact_id": "ARTIFACT-0001",
+        "path": "00-control/draft.json",
+        "sha256": "sha256:not-a-valid-digest",
+        "bytes": 10,
+        "media_type": "application/json",
+        "record_type": "CONTROL",
+        "version": "0.1-draft",
+        "created_at": "2026-07-10T19:00:00Z",
+        "created_by": "IDENTITY-0001",
+        "authority_ref": null,
+        "classification": "CONTROLLED",
+        "custodian_ref": "CUSTODIAN-0001",
+        "source_refs": [],
+        "supersedes": null,
+        "retention_ref": "RETENTION-0001",
+        "disclosure_refs": []
+      },
+      "expected_error_path": "/manifest/0/sha256",
+      "expected_validator": "pattern"
+    },
+    {
+      "case_id": "unknown_top_level_claim",
+      "description": "Unknown top-level claims are rejected instead of being silently ignored.",
+      "operation": "add",
+      "path": "/unsupported_claim",
+      "value": "WitnessOps is a qualified AI evaluator.",
+      "expected_error_path": "",
+      "expected_validator": "additionalProperties"
+    }
+  ]
+}
