@@ -16,8 +16,10 @@ It owns structural validity for:
 - receipts
 - verifier results
 - failure states
+- bounded evidence-packet profiles, including AI model evaluation evidence packets
 - valid examples
 - invalid examples
+- profile fixtures and negative mutation corpora
 - schema validation tests
 - explanatory contract documentation
 
@@ -42,7 +44,7 @@ Do not infer that a passing Codex Security review verifies any out-of-scope syst
 
 - `main` in `witnessops/witnessops-contracts` is the code authority for schemas, examples, and schema tests.
 - `schemas/` defines structural validity.
-- `examples/valid/` and `examples/invalid/` prove expected validator behavior.
+- `examples/` and `fixtures/` prove expected validator behavior for their declared profiles.
 - `pytest -q` is the deterministic validation command observed for this repo.
 - Codex Security may identify findings and suggest patches.
 - Codex Security findings do not authorize merge, release, schema-semantic changes, fixture truth changes, signing authority, verifier behavior changes, proof-engine behavior changes, deploy, or customer-impacting changes.
@@ -72,16 +74,21 @@ Treat the following as first-class review surfaces:
    - fixture names and failure intent
    - coverage for malformed or missing required fields
 
-4. `tests/`
+4. `fixtures/`
+   - profile-specific valid fixtures and negative mutation corpora
+   - no executed evaluation, customer evidence, private model material, or unsupported eligibility/qualification claim
+   - negative cases identify the precise contract boundary expected to reject them
+
+5. `tests/`
    - positive fixture validation
    - negative fixture rejection
    - exact schema/fixture pairing
 
-5. `.github/workflows/validate-contracts.yml`
+6. `.github/workflows/validate-contracts.yml`
    - deterministic schema-test execution
    - no secrets or external system dependency
 
-6. `docs/`
+7. `docs/`
    - contract boundaries
    - outcome semantics
    - failure-state semantics
@@ -120,6 +127,11 @@ The following must remain true unless an explicit design change is reviewed and 
 - Evidence manifest schema changes must preserve artifact hash, lineage, and portability requirements.
 - Verifier-result schema changes must preserve bounded outcome semantics and failure visibility.
 - Failure-state schema changes must preserve explicit blocked, partial, failed, or inconclusive language where applicable.
+- AI model evaluation packet changes must preserve explicit non-claims for evaluation execution, evaluator qualification and independence, Commission-work eligibility, testing-programme admission, evidence truth, and legal compliance.
+- Draft and prepared-unauthorized evaluation packets must reject run, finding, mitigation, retest, incident, and completed-verification evidence.
+- Lifecycle promotion must not bypass admitted authority, validated evaluator identity, model-access boundaries, environment/tool records, a frozen plan, disclosure controls, an incident route, custody evidence, or independent-reconstruction requirements applicable to that state.
+- Public disclosure cannot be authorized while disclosure controls are unresolved or revoked.
+- Independent reconstruction cannot be marked complete without a named verifier, verifier-independence evidence, a verification receipt, and a bounded decision.
 
 ## High-priority finding classes
 
@@ -134,6 +146,8 @@ Treat the following as P1 for review purposes:
 - verifier-result schema collapses pass/partial/fail/inconclusive/blocked semantics
 - workflow-class schema allows execution boundaries to be omitted where downstream systems rely on them
 - outcome or failure-state semantics allow unproven conditions to be presented as verified
+- AI evaluation packet accepts execution in a draft/unauthorized state or permits unsupported evaluator, Commission-work, programme-admission, legal-compliance, or verification claims
+- lifecycle conditions permit a closed evaluation packet without admitted authority, bounded access, frozen criteria, custody evidence, and the reconstruction status required for its closure state
 - CI validation stops proving both valid fixtures pass and invalid fixtures fail
 
 ## Lower-priority but relevant finding classes

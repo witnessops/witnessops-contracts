@@ -1,0 +1,3190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.witnessops.com/schemas/ai-model-evaluation/evidence-packet.schema.json",
+  "title": "WitnessOps AI Model Evaluation Evidence Packet",
+  "description": "Structural contract for a bounded AI model evaluation evidence packet. Conformance is not evidence that an evaluation occurred, that an evaluator is qualified or independent, or that WitnessOps is eligible for Commission work or admitted to a testing programme.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_version",
+    "packet_id",
+    "packet_state",
+    "evaluation_conclusion",
+    "generated_at",
+    "boundary",
+    "evaluator",
+    "authority",
+    "model_access",
+    "environment",
+    "tools",
+    "evaluation_plan",
+    "inputs",
+    "outputs",
+    "runs",
+    "observations",
+    "findings",
+    "mitigations",
+    "retests",
+    "custody_events",
+    "disclosure_controls",
+    "disclosure_events",
+    "incident_route",
+    "incidents",
+    "independent_reconstruction",
+    "gap_register",
+    "manifest"
+  ],
+  "properties": {
+    "packet_version": {
+      "const": "witnessops.ai_model_evaluation_evidence_packet.v1"
+    },
+    "packet_id": {
+      "type": "string",
+      "pattern": "^AIMEP-[0-9]{4}-[0-9]{4,}$"
+    },
+    "packet_state": {
+      "type": "string",
+      "enum": [
+        "DRAFT_TEMPLATE",
+        "PREPARED_UNAUTHORIZED",
+        "AUTHORIZED_NOT_STARTED",
+        "IN_PROGRESS",
+        "PAUSED",
+        "CLOSED",
+        "CLOSED_WITH_GAPS",
+        "ABORTED",
+        "SUPERSEDED",
+        "WITHDRAWN"
+      ]
+    },
+    "evaluation_conclusion": {
+      "type": "string",
+      "enum": [
+        "PASS_WITHIN_TESTED_BOUNDARY",
+        "PASS_WITH_LIMITATIONS",
+        "FAIL_WITHIN_TESTED_BOUNDARY",
+        "INCONCLUSIVE",
+        "ABORTED",
+        "NOT_EVALUATED"
+      ]
+    },
+    "generated_at": {
+      "$ref": "#/$defs/utc_timestamp"
+    },
+    "boundary": {
+      "$ref": "#/$defs/boundary"
+    },
+    "evaluator": {
+      "$ref": "#/$defs/evaluator"
+    },
+    "authority": {
+      "$ref": "#/$defs/authority"
+    },
+    "model_access": {
+      "$ref": "#/$defs/model_access"
+    },
+    "environment": {
+      "$ref": "#/$defs/environment"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/tool"
+      },
+      "uniqueItems": true
+    },
+    "evaluation_plan": {
+      "$ref": "#/$defs/evaluation_plan"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/input_record"
+      },
+      "uniqueItems": true
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/output_record"
+      },
+      "uniqueItems": true
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/run_record"
+      },
+      "uniqueItems": true
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/observation"
+      },
+      "uniqueItems": true
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      },
+      "uniqueItems": true
+    },
+    "mitigations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mitigation"
+      },
+      "uniqueItems": true
+    },
+    "retests": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/retest"
+      },
+      "uniqueItems": true
+    },
+    "custody_events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/custody_event"
+      },
+      "uniqueItems": true
+    },
+    "disclosure_controls": {
+      "$ref": "#/$defs/disclosure_controls"
+    },
+    "disclosure_events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/disclosure_event"
+      },
+      "uniqueItems": true
+    },
+    "incident_route": {
+      "$ref": "#/$defs/incident_route"
+    },
+    "incidents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/incident"
+      },
+      "uniqueItems": true
+    },
+    "independent_reconstruction": {
+      "$ref": "#/$defs/independent_reconstruction"
+    },
+    "gap_register": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/gap"
+      },
+      "uniqueItems": true
+    },
+    "manifest": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/manifest_entry"
+      },
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "packet_state": {
+            "enum": [
+              "DRAFT_TEMPLATE",
+              "PREPARED_UNAUTHORIZED"
+            ]
+          }
+        },
+        "required": [
+          "packet_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evaluation_conclusion": {
+            "const": "NOT_EVALUATED"
+          },
+          "runs": {
+            "maxItems": 0
+          },
+          "observations": {
+            "maxItems": 0
+          },
+          "findings": {
+            "maxItems": 0
+          },
+          "mitigations": {
+            "maxItems": 0
+          },
+          "retests": {
+            "maxItems": 0
+          },
+          "incidents": {
+            "maxItems": 0
+          },
+          "independent_reconstruction": {
+            "properties": {
+              "status": {
+                "const": "NOT_PERFORMED"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packet_state": {
+            "const": "AUTHORIZED_NOT_STARTED"
+          }
+        },
+        "required": [
+          "packet_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evaluation_conclusion": {
+            "const": "NOT_EVALUATED"
+          },
+          "runs": {
+            "maxItems": 0
+          },
+          "evaluator": {
+            "properties": {
+              "identity_status": {
+                "const": "VALIDATED"
+              }
+            }
+          },
+          "authority": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "model_access": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "environment": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "evaluation_plan": {
+            "properties": {
+              "status": {
+                "const": "FROZEN"
+              }
+            }
+          },
+          "disclosure_controls": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "incident_route": {
+            "properties": {
+              "status": {
+                "const": "READY"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packet_state": {
+            "enum": [
+              "IN_PROGRESS",
+              "PAUSED"
+            ]
+          }
+        },
+        "required": [
+          "packet_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evaluation_conclusion": {
+            "const": "NOT_EVALUATED"
+          },
+          "runs": {
+            "minItems": 1,
+            "contains": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "STARTED",
+                    "COMPLETED",
+                    "COMPLETED_WITH_DEVIATION",
+                    "FAILED_TECHNICAL",
+                    "STOPPED_SAFETY",
+                    "STOPPED_AUTHORITY",
+                    "INVALIDATED",
+                    "SUPERSEDED"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "minContains": 1
+          },
+          "evaluator": {
+            "properties": {
+              "identity_status": {
+                "const": "VALIDATED"
+              }
+            }
+          },
+          "authority": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "model_access": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "environment": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "evaluation_plan": {
+            "properties": {
+              "status": {
+                "const": "FROZEN"
+              }
+            }
+          },
+          "disclosure_controls": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "incident_route": {
+            "properties": {
+              "status": {
+                "const": "READY"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packet_state": {
+            "enum": [
+              "CLOSED",
+              "CLOSED_WITH_GAPS"
+            ]
+          }
+        },
+        "required": [
+          "packet_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evaluation_conclusion": {
+            "not": {
+              "const": "NOT_EVALUATED"
+            }
+          },
+          "runs": {
+            "minItems": 1,
+            "contains": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "COMPLETED",
+                    "COMPLETED_WITH_DEVIATION",
+                    "FAILED_TECHNICAL",
+                    "STOPPED_SAFETY",
+                    "STOPPED_AUTHORITY",
+                    "INVALIDATED",
+                    "SUPERSEDED"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "minContains": 1
+          },
+          "evaluator": {
+            "properties": {
+              "identity_status": {
+                "const": "VALIDATED"
+              }
+            }
+          },
+          "authority": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "model_access": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "environment": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "evaluation_plan": {
+            "properties": {
+              "status": {
+                "const": "FROZEN"
+              }
+            }
+          },
+          "disclosure_controls": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            }
+          },
+          "incident_route": {
+            "properties": {
+              "status": {
+                "const": "READY"
+              }
+            }
+          },
+          "custody_events": {
+            "minItems": 1
+          },
+          "manifest": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packet_state": {
+            "const": "CLOSED"
+          }
+        },
+        "required": [
+          "packet_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "gap_register": {
+            "items": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "RESOLVED",
+                    "SUPERSEDED"
+                  ]
+                }
+              }
+            }
+          },
+          "independent_reconstruction": {
+            "properties": {
+              "status": {
+                "const": "COMPLETE"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packet_state": {
+            "const": "CLOSED_WITH_GAPS"
+          }
+        },
+        "required": [
+          "packet_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evaluation_conclusion": {
+            "enum": [
+              "PASS_WITH_LIMITATIONS",
+              "FAIL_WITHIN_TESTED_BOUNDARY",
+              "INCONCLUSIVE"
+            ]
+          },
+          "gap_register": {
+            "minItems": 1,
+            "contains": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "OPEN",
+                    "ACCEPTED_WITH_LIMITATION"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "minContains": 1
+          },
+          "independent_reconstruction": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "PLANNED",
+                  "COMPLETE",
+                  "BLOCKED"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "packet_state": {
+            "const": "ABORTED"
+          }
+        },
+        "required": [
+          "packet_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evaluation_conclusion": {
+            "const": "ABORTED"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "non_empty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "utc_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "artifact_ref": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9-]*-[0-9]{4,}$"
+    },
+    "identity_ref": {
+      "type": "string",
+      "pattern": "^(IDENTITY|EVALR|VERIFIER|PRINCIPAL|CUSTODIAN)-[0-9]{4,}$"
+    },
+    "external_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "evidence_refs"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "NOT_CLAIMED",
+            "NOT_ESTABLISHED",
+            "ESTABLISHED_BY_EVIDENCE"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ESTABLISHED_BY_EVIDENCE"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "evidence_refs": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet_confers_authority",
+        "schema_conformance_is_proof",
+        "legal_compliance_conclusion",
+        "external_claims",
+        "non_claims"
+      ],
+      "properties": {
+        "packet_confers_authority": {
+          "const": false
+        },
+        "schema_conformance_is_proof": {
+          "const": false
+        },
+        "legal_compliance_conclusion": {
+          "type": "string",
+          "enum": [
+            "NOT_ASSESSED",
+            "OUT_OF_SCOPE",
+            "SEPARATELY_SUPPORTED"
+          ]
+        },
+        "external_claims": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "commission_work_eligibility",
+            "evaluator_qualification",
+            "testing_program_admission"
+          ],
+          "properties": {
+            "commission_work_eligibility": {
+              "$ref": "#/$defs/external_claim"
+            },
+            "evaluator_qualification": {
+              "$ref": "#/$defs/external_claim"
+            },
+            "testing_program_admission": {
+              "$ref": "#/$defs/external_claim"
+            }
+          }
+        },
+        "non_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "evaluator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evaluator_id",
+        "identity_status",
+        "legal_identity_ref",
+        "public_identity",
+        "jurisdiction",
+        "competence_claims",
+        "competence_evidence_refs",
+        "limitations",
+        "independence"
+      ],
+      "properties": {
+        "evaluator_id": {
+          "type": "string",
+          "pattern": "^EVALR-[0-9]{4,}$"
+        },
+        "identity_status": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "DECLARED",
+            "VALIDATED"
+          ]
+        },
+        "legal_identity_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "public_identity": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "jurisdiction": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "competence_claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "competence_evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "independence": {
+          "$ref": "#/$defs/independence"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "identity_status": {
+                "const": "VALIDATED"
+              }
+            },
+            "required": [
+              "identity_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "legal_identity_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "independence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declaration_status",
+        "declaration_artifact_ref",
+        "corroboration_status",
+        "corroborating_evidence_refs",
+        "independent_reviewer_ref",
+        "conflicts",
+        "constraints"
+      ],
+      "properties": {
+        "declaration_status": {
+          "type": "string",
+          "enum": [
+            "DECLARED_INDEPENDENT",
+            "DECLARED_INDEPENDENT_WITH_CONSTRAINTS",
+            "NOT_INDEPENDENT",
+            "INDEPENDENCE_UNRESOLVED"
+          ]
+        },
+        "declaration_artifact_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "corroboration_status": {
+          "type": "string",
+          "enum": [
+            "NOT_REVIEWED",
+            "CORROBORATED",
+            "CONTRADICTED",
+            "UNRESOLVED"
+          ]
+        },
+        "corroborating_evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "independent_reviewer_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "declaration_status": {
+                "enum": [
+                  "DECLARED_INDEPENDENT",
+                  "DECLARED_INDEPENDENT_WITH_CONSTRAINTS",
+                  "NOT_INDEPENDENT"
+                ]
+              }
+            },
+            "required": [
+              "declaration_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "declaration_artifact_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "declaration_artifact_ref": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "corroboration_status": {
+                "enum": [
+                  "CORROBORATED",
+                  "CONTRADICTED"
+                ]
+              }
+            },
+            "required": [
+              "corroboration_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "corroborating_evidence_refs": {
+                "minItems": 1
+              },
+              "independent_reviewer_ref": {
+                "$ref": "#/$defs/identity_ref"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "declaration_status": {
+                "const": "DECLARED_INDEPENDENT_WITH_CONSTRAINTS"
+              }
+            },
+            "required": [
+              "declaration_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "constraints": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "declaration_status": {
+                "const": "NOT_INDEPENDENT"
+              }
+            },
+            "required": [
+              "declaration_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "conflicts": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_id",
+        "status",
+        "principal_identity_ref",
+        "principal_authority_source_ref",
+        "evaluator_appointment_ref",
+        "authorized_model_ref",
+        "authorized_methods",
+        "prohibited_actions",
+        "starts_at",
+        "expires_at",
+        "jurisdiction_boundary",
+        "safety_constraints",
+        "stop_authority_ref",
+        "incident_authority_ref",
+        "disclosure_authority_ref"
+      ],
+      "properties": {
+        "authority_id": {
+          "type": "string",
+          "pattern": "^AUTH-[0-9]{4,}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "ADMITTED",
+            "REVOKED",
+            "EXPIRED"
+          ]
+        },
+        "principal_identity_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "principal_authority_source_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evaluator_appointment_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "authorized_model_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^MODEL-[0-9]{4,}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "authorized_methods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "prohibited_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "starts_at": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/utc_timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/utc_timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jurisdiction_boundary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "safety_constraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "stop_authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "incident_authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "disclosure_authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "principal_identity_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "principal_authority_source_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "evaluator_appointment_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "authorized_model_ref": {
+                "type": "string",
+                "pattern": "^MODEL-[0-9]{4,}$"
+              },
+              "authorized_methods": {
+                "minItems": 1
+              },
+              "starts_at": {
+                "$ref": "#/$defs/utc_timestamp"
+              },
+              "expires_at": {
+                "$ref": "#/$defs/utc_timestamp"
+              },
+              "jurisdiction_boundary": {
+                "minItems": 1
+              },
+              "stop_authority_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "incident_authority_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "disclosure_authority_ref": {
+                "$ref": "#/$defs/identity_ref"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "model_access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_id",
+        "status",
+        "provider",
+        "model_family",
+        "version_identifier",
+        "model_artifact_hash",
+        "access_mode",
+        "weight_access",
+        "system_prompt_access",
+        "log_access",
+        "network_access",
+        "access_authority_ref",
+        "limitations"
+      ],
+      "properties": {
+        "model_id": {
+          "type": "string",
+          "pattern": "^MODEL-[0-9]{4,}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "ADMITTED",
+            "REVOKED",
+            "EXPIRED"
+          ]
+        },
+        "provider": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "model_family": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "version_identifier": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/non_empty_string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model_artifact_hash": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "access_mode": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "API",
+            "HOSTED_UI",
+            "CONTROLLED_TERMINAL",
+            "LOCAL_WEIGHTS",
+            "WHITE_BOX",
+            "GREY_BOX",
+            "BLACK_BOX"
+          ]
+        },
+        "weight_access": {
+          "type": "string",
+          "enum": [
+            "FULL",
+            "PARTIAL",
+            "NONE",
+            "UNRESOLVED"
+          ]
+        },
+        "system_prompt_access": {
+          "type": "string",
+          "enum": [
+            "FULL",
+            "REDACTED",
+            "NONE",
+            "UNRESOLVED"
+          ]
+        },
+        "log_access": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "REQUEST_RESPONSE",
+              "TOKEN_LOG",
+              "TOOL_TRACE",
+              "INTERNAL_TRACE",
+              "NONE",
+              "UNRESOLVED"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "network_access": {
+          "type": "string",
+          "enum": [
+            "ISOLATED",
+            "ALLOWLISTED",
+            "UNRESTRICTED",
+            "UNRESOLVED"
+          ]
+        },
+        "access_authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "version_identifier": {
+                "$ref": "#/$defs/non_empty_string"
+              },
+              "access_mode": {
+                "not": {
+                  "const": "UNRESOLVED"
+                }
+              },
+              "access_authority_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "environment_id",
+        "status",
+        "manifest_artifact_ref",
+        "reproducibility_class",
+        "runtime_identity_ref",
+        "tool_refs",
+        "network_boundary",
+        "secret_handling",
+        "randomness",
+        "capture_limitations"
+      ],
+      "properties": {
+        "environment_id": {
+          "type": "string",
+          "pattern": "^ENV-[0-9]{4,}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "ADMITTED",
+            "RETIRED"
+          ]
+        },
+        "manifest_artifact_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reproducibility_class": {
+          "type": "string",
+          "enum": [
+            "BYTE_REPRODUCIBLE",
+            "FUNCTIONALLY_REPRODUCIBLE",
+            "PROVIDER_REPLAY_ONLY",
+            "ANALYTICAL_REPLAY_ONLY",
+            "NOT_REPRODUCIBLE",
+            "UNRESOLVED"
+          ]
+        },
+        "runtime_identity_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tool_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^TOOL-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "network_boundary": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "secret_handling": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "randomness": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "capture_limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "manifest_artifact_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "runtime_identity_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "tool_refs": {
+                "minItems": 1
+              },
+              "reproducibility_class": {
+                "not": {
+                  "const": "UNRESOLVED"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool_id",
+        "status",
+        "name",
+        "purpose",
+        "version",
+        "artifact_hash",
+        "configuration_ref",
+        "control_class",
+        "limitations"
+      ],
+      "properties": {
+        "tool_id": {
+          "type": "string",
+          "pattern": "^TOOL-[0-9]{4,}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "ADMITTED",
+            "UNPINNED",
+            "RETIRED"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "purpose": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "version": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/non_empty_string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifact_hash": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "configuration_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "control_class": {
+          "type": "string",
+          "enum": [
+            "EVALUATOR_CONTROLLED",
+            "PROVIDER_CONTROLLED",
+            "THIRD_PARTY_CONTROLLED",
+            "UNRESOLVED"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "version": {
+                "$ref": "#/$defs/non_empty_string"
+              },
+              "artifact_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "configuration_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "control_class": {
+                "not": {
+                  "const": "UNRESOLVED"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "evaluation_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "status",
+        "plan_artifact_ref",
+        "plan_hash",
+        "frozen_at",
+        "frozen_by",
+        "criteria",
+        "stop_conditions",
+        "incident_route_ref",
+        "non_claims",
+        "amendments"
+      ],
+      "properties": {
+        "plan_id": {
+          "type": "string",
+          "pattern": "^PLAN-[0-9]{4,}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "DRAFT_UNFROZEN",
+            "FROZEN",
+            "SUPERSEDED"
+          ]
+        },
+        "plan_artifact_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "plan_hash": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frozen_at": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/utc_timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frozen_by": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/criterion"
+          },
+          "uniqueItems": true
+        },
+        "stop_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "incident_route_ref": {
+          "type": "string",
+          "pattern": "^INC-ROUTE-[0-9]{4,}$"
+        },
+        "non_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "amendments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "previous_plan_hash",
+              "new_plan_hash",
+              "reason",
+              "authority_ref",
+              "effective_run_boundary",
+              "comparability_effect"
+            ],
+            "properties": {
+              "previous_plan_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "new_plan_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "reason": {
+                "$ref": "#/$defs/non_empty_string"
+              },
+              "authority_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "effective_run_boundary": {
+                "$ref": "#/$defs/non_empty_string"
+              },
+              "comparability_effect": {
+                "$ref": "#/$defs/non_empty_string"
+              }
+            }
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "FROZEN"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "plan_artifact_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "plan_hash": {
+                "$ref": "#/$defs/sha256"
+              },
+              "frozen_at": {
+                "$ref": "#/$defs/utc_timestamp"
+              },
+              "frozen_by": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "criteria": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "DRAFT_UNFROZEN"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "plan_hash": {
+                "type": "null"
+              },
+              "frozen_at": {
+                "type": "null"
+              },
+              "frozen_by": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterion_id",
+        "claim",
+        "metric",
+        "direction",
+        "threshold",
+        "sample_rule",
+        "repetitions",
+        "uncertainty_method",
+        "failure_rule",
+        "decision_mapping"
+      ],
+      "properties": {
+        "criterion_id": {
+          "type": "string",
+          "pattern": "^CRIT-[0-9]{4,}$"
+        },
+        "claim": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "metric": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "MINIMUM",
+            "MAXIMUM",
+            "EQUALITY",
+            "CATEGORICAL",
+            "BOUNDED_RANGE"
+          ]
+        },
+        "threshold": {},
+        "sample_rule": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "repetitions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "uncertainty_method": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "failure_rule": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "decision_mapping": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pass",
+            "fail",
+            "inconclusive"
+          ],
+          "properties": {
+            "pass": {
+              "$ref": "#/$defs/non_empty_string"
+            },
+            "fail": {
+              "$ref": "#/$defs/non_empty_string"
+            },
+            "inconclusive": {
+              "$ref": "#/$defs/non_empty_string"
+            }
+          }
+        }
+      }
+    },
+    "input_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_id",
+        "artifact_ref",
+        "sha256",
+        "source",
+        "acquisition_authority_ref",
+        "classification",
+        "transformations",
+        "disclosure_limitations"
+      ],
+      "properties": {
+        "input_id": {
+          "type": "string",
+          "pattern": "^INPUT-[0-9]{4,}$"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "acquisition_authority_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "transformations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "disclosure_limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "output_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output_id",
+        "run_id",
+        "input_refs",
+        "artifact_ref",
+        "sha256",
+        "capture_method",
+        "classification",
+        "capture_loss"
+      ],
+      "properties": {
+        "output_id": {
+          "type": "string",
+          "pattern": "^OUTPUT-[0-9]{4,}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^RUN-[0-9]{4,}$"
+        },
+        "input_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^INPUT-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "capture_method": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "capture_loss": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "run_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "status",
+        "authority_ref",
+        "plan_id",
+        "plan_hash",
+        "model_id",
+        "environment_id",
+        "tool_refs",
+        "operator_ref",
+        "started_at",
+        "ended_at",
+        "input_refs",
+        "output_refs",
+        "log_refs",
+        "deviations"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "pattern": "^RUN-[0-9]{4,}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "PLANNED",
+            "STARTED",
+            "COMPLETED",
+            "COMPLETED_WITH_DEVIATION",
+            "FAILED_TECHNICAL",
+            "STOPPED_SAFETY",
+            "STOPPED_AUTHORITY",
+            "INVALIDATED",
+            "SUPERSEDED"
+          ]
+        },
+        "authority_ref": {
+          "type": "string",
+          "pattern": "^AUTH-[0-9]{4,}$"
+        },
+        "plan_id": {
+          "type": "string",
+          "pattern": "^PLAN-[0-9]{4,}$"
+        },
+        "plan_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "model_id": {
+          "type": "string",
+          "pattern": "^MODEL-[0-9]{4,}$"
+        },
+        "environment_id": {
+          "type": "string",
+          "pattern": "^ENV-[0-9]{4,}$"
+        },
+        "tool_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^TOOL-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "operator_ref": {
+          "$ref": "#/$defs/identity_ref"
+        },
+        "started_at": {
+          "$ref": "#/$defs/utc_timestamp"
+        },
+        "ended_at": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/utc_timestamp"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "input_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^INPUT-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^OUTPUT-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "log_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "deviations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observation_id",
+        "statement",
+        "evidence_refs",
+        "source_type",
+        "uncertainty",
+        "review_status"
+      ],
+      "properties": {
+        "observation_id": {
+          "type": "string",
+          "pattern": "^OBS-[0-9]{4,}$"
+        },
+        "statement": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "source_type": {
+          "type": "string",
+          "enum": [
+            "MACHINE_DERIVED",
+            "HUMAN_DERIVED",
+            "MIXED"
+          ]
+        },
+        "uncertainty": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "review_status": {
+          "type": "string",
+          "enum": [
+            "UNREVIEWED",
+            "CONFIRMED",
+            "DISPUTED"
+          ]
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "state",
+        "statement",
+        "observation_refs",
+        "run_refs",
+        "criterion_refs",
+        "model_id",
+        "severity",
+        "confidence",
+        "alternative_explanations",
+        "affected_claim",
+        "non_claims",
+        "reviewer_ref"
+      ],
+      "properties": {
+        "finding_id": {
+          "type": "string",
+          "pattern": "^FIND-[0-9]{4,}$"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "DRAFT",
+            "OPEN",
+            "CONFIRMED_WITHIN_BOUNDARY",
+            "DISPUTED",
+            "MITIGATION_PROPOSED",
+            "MITIGATED_PENDING_RETEST",
+            "CLOSED_RETEST_PASS",
+            "CLOSED_RETEST_FAIL",
+            "CLOSED_RISK_ACCEPTED",
+            "WITHDRAWN_WITH_REASON",
+            "SUPERSEDED"
+          ]
+        },
+        "statement": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "observation_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^OBS-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "run_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^RUN-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "criterion_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CRIT-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "model_id": {
+          "type": "string",
+          "pattern": "^MODEL-[0-9]{4,}$"
+        },
+        "severity": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "alternative_explanations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "affected_claim": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "non_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "reviewer_ref": {
+          "$ref": "#/$defs/identity_ref"
+        }
+      }
+    },
+    "mitigation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mitigation_id",
+        "finding_refs",
+        "owner_ref",
+        "authority_ref",
+        "change_artifact_ref",
+        "expected_effect",
+        "new_risks",
+        "implemented_at",
+        "rollback_ref"
+      ],
+      "properties": {
+        "mitigation_id": {
+          "type": "string",
+          "pattern": "^MIT-[0-9]{4,}$"
+        },
+        "finding_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^FIND-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "owner_ref": {
+          "$ref": "#/$defs/identity_ref"
+        },
+        "authority_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "change_artifact_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "expected_effect": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "new_risks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "implemented_at": {
+          "$ref": "#/$defs/utc_timestamp"
+        },
+        "rollback_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        }
+      }
+    },
+    "retest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "retest_id",
+        "finding_ref",
+        "mitigation_ref",
+        "plan_id",
+        "plan_hash",
+        "environment_delta_ref",
+        "model_delta_ref",
+        "run_refs",
+        "comparison_artifact_ref",
+        "regression_checks",
+        "decision",
+        "residual_risk"
+      ],
+      "properties": {
+        "retest_id": {
+          "type": "string",
+          "pattern": "^RETEST-[0-9]{4,}$"
+        },
+        "finding_ref": {
+          "type": "string",
+          "pattern": "^FIND-[0-9]{4,}$"
+        },
+        "mitigation_ref": {
+          "type": "string",
+          "pattern": "^MIT-[0-9]{4,}$"
+        },
+        "plan_id": {
+          "type": "string",
+          "pattern": "^PLAN-[0-9]{4,}$"
+        },
+        "plan_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "environment_delta_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "model_delta_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "run_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^RUN-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "comparison_artifact_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "regression_checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "PARTIAL",
+            "INCONCLUSIVE"
+          ]
+        },
+        "residual_risk": {
+          "$ref": "#/$defs/non_empty_string"
+        }
+      }
+    },
+    "classification": {
+      "type": "string",
+      "enum": [
+        "PUBLIC",
+        "CONTROLLED",
+        "RESTRICTED",
+        "HIGHLY_RESTRICTED"
+      ]
+    },
+    "custody_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "custody_event_id",
+        "artifact_ref",
+        "artifact_hash",
+        "event_type",
+        "previous_custodian_ref",
+        "new_custodian_ref",
+        "location_class",
+        "occurred_at",
+        "actor_ref",
+        "authority_ref",
+        "integrity_mechanism",
+        "result"
+      ],
+      "properties": {
+        "custody_event_id": {
+          "type": "string",
+          "pattern": "^CUST-[0-9]{4,}$"
+        },
+        "artifact_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "artifact_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "ACQUIRE",
+            "CREATE",
+            "TRANSFER",
+            "COPY",
+            "TRANSFORM",
+            "DISCLOSE",
+            "ARCHIVE",
+            "ACCESS_GRANT",
+            "ACCESS_REVOKE",
+            "DESTROY"
+          ]
+        },
+        "previous_custodian_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "new_custodian_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "location_class": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/utc_timestamp"
+        },
+        "actor_ref": {
+          "$ref": "#/$defs/identity_ref"
+        },
+        "authority_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "integrity_mechanism": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "PARTIAL",
+            "FAIL"
+          ]
+        }
+      }
+    },
+    "disclosure_controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "authority_ref",
+        "default_classification",
+        "public_release_authorized",
+        "secret_material_permitted",
+        "redaction_policy_ref",
+        "retention_policy_ref"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "ADMITTED",
+            "REVOKED"
+          ]
+        },
+        "authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "default_classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "public_release_authorized": {
+          "type": "boolean"
+        },
+        "secret_material_permitted": {
+          "const": false
+        },
+        "redaction_policy_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retention_policy_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ADMITTED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "authority_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "redaction_policy_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "retention_policy_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "not": {
+                  "const": "ADMITTED"
+                }
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "public_release_authorized": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "disclosure_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disclosure_event_id",
+        "recipient_ref",
+        "purpose",
+        "artifact_refs",
+        "classification",
+        "redaction_refs",
+        "authority_ref",
+        "channel",
+        "occurred_at",
+        "onward_disclosure_constraints"
+      ],
+      "properties": {
+        "disclosure_event_id": {
+          "type": "string",
+          "pattern": "^DISC-[0-9]{4,}$"
+        },
+        "recipient_ref": {
+          "$ref": "#/$defs/identity_ref"
+        },
+        "purpose": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "artifact_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "redaction_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "authority_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "channel": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "occurred_at": {
+          "$ref": "#/$defs/utc_timestamp"
+        },
+        "onward_disclosure_constraints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "incident_route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_id",
+        "status",
+        "incident_owner_ref",
+        "classification_authority_ref",
+        "stop_authority_ref",
+        "routes",
+        "preservation_requirements",
+        "unresolved_routes"
+      ],
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "pattern": "^INC-ROUTE-[0-9]{4,}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "UNRESOLVED",
+            "READY",
+            "REVOKED"
+          ]
+        },
+        "incident_owner_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "classification_authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stop_authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "route_type",
+              "recipient_ref",
+              "authority_source_ref",
+              "deadline_basis",
+              "secure_contact_ref"
+            ],
+            "properties": {
+              "route_type": {
+                "type": "string",
+                "enum": [
+                  "EVALUATION_SAFETY",
+                  "MODEL_PROVIDER",
+                  "PRINCIPAL",
+                  "AI_REGULATORY",
+                  "VULNERABILITY",
+                  "PERSONAL_DATA",
+                  "SECTOR",
+                  "EMERGENCY"
+                ]
+              },
+              "recipient_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "authority_source_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "deadline_basis": {
+                "$ref": "#/$defs/non_empty_string"
+              },
+              "secure_contact_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              }
+            }
+          },
+          "uniqueItems": true
+        },
+        "preservation_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        },
+        "unresolved_routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "READY"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "incident_owner_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "classification_authority_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "stop_authority_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "routes": {
+                "minItems": 2
+              },
+              "unresolved_routes": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "incident": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "incident_id",
+        "state",
+        "detected_at",
+        "evidence_refs",
+        "affected_run_refs",
+        "preservation_custody_refs",
+        "classification_authority_ref",
+        "reporting_decision_ref",
+        "reporting_route_type",
+        "corrective_action_refs"
+      ],
+      "properties": {
+        "incident_id": {
+          "type": "string",
+          "pattern": "^INC-[0-9]{4,}$"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "SIGNAL",
+            "POTENTIAL_SERIOUS_INCIDENT",
+            "REPORTABLE_CONFIRMED_BY_AUTHORITY",
+            "NOT_REPORTABLE_WITH_RATIONALE",
+            "REPORTED",
+            "CLOSED_WITH_CORRECTIVE_ACTION",
+            "UNRESOLVED"
+          ]
+        },
+        "detected_at": {
+          "$ref": "#/$defs/utc_timestamp"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "affected_run_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^RUN-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "preservation_custody_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^CUST-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        },
+        "classification_authority_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "reporting_decision_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "reporting_route_type": {
+          "type": "string",
+          "enum": [
+            "EVALUATION_SAFETY",
+            "MODEL_PROVIDER",
+            "PRINCIPAL",
+            "AI_REGULATORY",
+            "VULNERABILITY",
+            "PERSONAL_DATA",
+            "SECTOR",
+            "EMERGENCY",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "corrective_action_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "independent_reconstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "planned_mode",
+        "verifier_ref",
+        "verifier_independence_artifact_ref",
+        "verification_receipt_ref",
+        "decision",
+        "limitations"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "NOT_PERFORMED",
+            "PLANNED",
+            "COMPLETE",
+            "BLOCKED"
+          ]
+        },
+        "planned_mode": {
+          "type": "string",
+          "enum": [
+            "INTEGRITY_RECONSTRUCTION",
+            "ANALYTICAL_REPLAY",
+            "EXECUTION_REPLAY",
+            "INDEPENDENT_REPRODUCTION"
+          ]
+        },
+        "verifier_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verifier_independence_artifact_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verification_receipt_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "NOT_PERFORMED",
+            "PASS_RECONSTRUCTED",
+            "PASS_INTEGRITY_ONLY",
+            "PASS_WITH_BOUNDED_GAPS",
+            "PARTIAL_RECONSTRUCTION",
+            "FAIL_INTEGRITY",
+            "FAIL_AUTHORITY",
+            "FAIL_LINEAGE",
+            "BLOCKED_ACCESS",
+            "BLOCKED_MISSING_EVIDENCE",
+            "INDEPENDENCE_UNRESOLVED"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/non_empty_string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "COMPLETE"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "verifier_ref": {
+                "$ref": "#/$defs/identity_ref"
+              },
+              "verifier_independence_artifact_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "verification_receipt_ref": {
+                "$ref": "#/$defs/artifact_ref"
+              },
+              "decision": {
+                "not": {
+                  "const": "NOT_PERFORMED"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "NOT_PERFORMED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "verifier_ref": {
+                "type": "null"
+              },
+              "verifier_independence_artifact_ref": {
+                "type": "null"
+              },
+              "verification_receipt_ref": {
+                "type": "null"
+              },
+              "decision": {
+                "const": "NOT_PERFORMED"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gap_id",
+        "missing_evidence",
+        "effect",
+        "status",
+        "owner_ref"
+      ],
+      "properties": {
+        "gap_id": {
+          "type": "string",
+          "pattern": "^GAP-[0-9]{4,}$"
+        },
+        "missing_evidence": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "effect": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "RESOLVED",
+            "ACCEPTED_WITH_LIMITATION",
+            "SUPERSEDED"
+          ]
+        },
+        "owner_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identity_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "manifest_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "path",
+        "sha256",
+        "bytes",
+        "media_type",
+        "record_type",
+        "version",
+        "created_at",
+        "created_by",
+        "authority_ref",
+        "classification",
+        "custodian_ref",
+        "source_refs",
+        "supersedes",
+        "retention_ref",
+        "disclosure_refs"
+      ],
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(00-control|01-authority|02-evaluator|03-model-access|04-environment-tools|05-plan|06-runs|07-findings|08-mitigation-retest|09-custody-disclosure|10-incidents|11-verification|12-presentation)/[A-Za-z0-9._/-]+$",
+          "not": {
+            "pattern": "(^|/)\\.\\.(/|$)"
+          }
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "media_type": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "record_type": {
+          "type": "string",
+          "enum": [
+            "CONTROL",
+            "AUTHORITY",
+            "EVALUATOR",
+            "MODEL_ACCESS",
+            "ENVIRONMENT_TOOL",
+            "PLAN",
+            "RUN",
+            "FINDING",
+            "MITIGATION_RETEST",
+            "CUSTODY_DISCLOSURE",
+            "INCIDENT",
+            "VERIFICATION",
+            "PRESENTATION"
+          ]
+        },
+        "version": {
+          "$ref": "#/$defs/non_empty_string"
+        },
+        "created_at": {
+          "$ref": "#/$defs/utc_timestamp"
+        },
+        "created_by": {
+          "$ref": "#/$defs/identity_ref"
+        },
+        "authority_ref": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "classification": {
+          "$ref": "#/$defs/classification"
+        },
+        "custodian_ref": {
+          "$ref": "#/$defs/identity_ref"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifact_ref"
+          },
+          "uniqueItems": true
+        },
+        "supersedes": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/artifact_ref"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retention_ref": {
+          "$ref": "#/$defs/artifact_ref"
+        },
+        "disclosure_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^DISC-[0-9]{4,}$"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

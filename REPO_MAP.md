@@ -15,6 +15,7 @@ verifier result schema
 ci evidence bundle schema
 ci verifier result schema
 failure-state schema
+AI model evaluation evidence-packet schema and fixtures
 valid and invalid schema fixtures
 schema validation CI
 ```
@@ -30,18 +31,35 @@ private client evidence
 website copy
 ```
 
-## Planned structure
+## Current contract structure
 
 ```text
 schemas/
+  ai-model-evaluation/
+    evidence-packet.schema.json
+  docs-assistant/
+    valid/
+    invalid/
+    answer.schema.json
+    eval-result.schema.json
+    source-manifest.schema.json
   workflow-class.schema.json
-  proof-run.schema.json
   evidence-manifest.schema.json
   receipt.schema.json
   verifier-result.schema.json
   ci-evidence-bundle.schema.json
   ci-verifier-result.schema.json
   failure-state.schema.json
+  orchestration-result.schema.json
+  package-index.schema.json
+
+fixtures/
+  ai-model-evaluation/
+    valid/
+      evidence-packet.draft.valid.json
+    invalid/
+      negative-cases.json
+  docs-assistant/
 
 examples/
   valid/
@@ -57,13 +75,16 @@ examples/
     verifier-result.invalid-outcome.json
 
 tests/
+  test_ai_model_evaluation_evidence_packet.py
+  test_docs_assistant_schemas.py
+  test_host_triage_manifest.py
   test_schema_validation.py
-  test_negative_fixtures.py
 
 docs/
-  contract-boundaries.md
-  outcome-semantics.md
-  failure-state-semantics.md
+  CODEX_SECURITY_THREAT_MODEL.md
+  ci-evidence-bundle.md
+  evidence-packets/
+    ai-model-evaluation-evidence-packet-v1.md
 
 .github/workflows/
   validate-contracts.yml
@@ -72,5 +93,5 @@ docs/
 ## First gate
 
 ```text
-CI proves valid fixtures pass and invalid fixtures fail.
+CI proves valid fixtures pass, negative fixtures fail for their declared boundary, and draft AI model evaluation packets cannot cross execution, authority, disclosure, overclaim, or verification gates without the required records.
 ```

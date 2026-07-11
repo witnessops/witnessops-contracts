@@ -5,7 +5,7 @@
 | Field | Value |
 |---|---|
 | Document ID | `AI_MODEL_EVALUATION_EVIDENCE_PACKET_V1` |
-| Version | `0.1-draft` |
+| Version | `0.2-draft` |
 | Status | `DRAFT_TEMPLATE_NOT_EXECUTED` |
 | Owner | WitnessOps |
 | Intended use | Bounded evidence packet for an authorized AI model evaluation |
@@ -15,9 +15,22 @@
 
 ## Decision
 
-`DRAFT_PACKET_CONTRACT_COMPLETE_EXECUTION_NOT_AUTHORIZED`
+`DRAFT_PACKET_CONTRACT_AND_CORE_SCHEMA_COMPLETE_EXECUTION_NOT_AUTHORIZED`
 
 This document defines the minimum records and verification procedure for a future AI model evaluation evidence packet. It does not record an evaluation, appoint an evaluator, authorize access to a model, establish evaluator independence, or support a safety, security, compliance, certification, or eligibility conclusion.
+
+## Machine-readable core profile
+
+The contract has a machine-readable core profile:
+
+- Schema: `schemas/ai-model-evaluation/evidence-packet.schema.json`
+- Valid unexecuted fixture: `fixtures/ai-model-evaluation/valid/evidence-packet.draft.valid.json`
+- Negative mutation corpus: `fixtures/ai-model-evaluation/invalid/negative-cases.json`
+- Contract tests: `tests/test_ai_model_evaluation_evidence_packet.py`
+
+The schema enforces strict field boundaries, identifier and hash shapes, UTC timestamps, lifecycle gates, external-claim evidence requirements, plan-freeze prerequisites, disclosure gating, and independent-reconstruction receipt prerequisites. It rejects execution records in draft or prepared-unauthorized packets.
+
+The schema does not establish that referenced artifacts exist, hashes match stored bytes, signatures are valid, custody is continuous, an authority source is genuine, an evaluator is competent or independent, an evaluation occurred, a finding is true, or a legal duty is satisfied. Those require the retained artifacts and an implementation of the independent reconstruction procedure. Schema acceptance is structural contract conformance only.
 
 ## Mandatory boundary and non-claims
 

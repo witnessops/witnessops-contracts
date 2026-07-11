@@ -1,8 +1,8 @@
 # witnessops-contracts
 
-Canonical contract surface for WitnessOps proof runs.
+Canonical contract surface for WitnessOps proof runs and bounded evidence packets.
 
-This repository defines the schemas and validation contracts that decide whether a WitnessOps workflow class, proof run, evidence manifest, receipt, verifier result, and failure state are structurally valid.
+This repository defines the schemas and validation contracts that decide whether WitnessOps workflow classes, proof artifacts, receipts, verifier results, failure states, CI evidence bundles, and bounded evidence packets are structurally valid.
 
 ## Authority boundary
 
@@ -17,6 +17,7 @@ CI evidence contracts define workflow-run evidence structure only. They do not v
 | Receipt schema | Yes | Defines signed receipt envelope and claim structure. |
 | Verifier result schema | Yes | Defines verifier output shape. |
 | Failure-state schema | Yes | Defines bounded failure-state records. |
+| AI model evaluation evidence-packet contract | Yes | Defines the structural core, lifecycle gates, explicit non-claims, and fixture corpus for a bounded evaluation evidence packet. |
 | Engine execution | No | Belongs in `witnessops-proof-engine`. |
 | Offline verification implementation | No | Belongs in `witnessops-verifier`. |
 | Source-system adapters | No | Belongs in future `witnessops-adapters`. |
@@ -26,24 +27,34 @@ CI evidence contracts define workflow-run evidence structure only. They do not v
 ```text
 witnessops-contracts/
   schemas/
+    ai-model-evaluation/
+      evidence-packet.schema.json
+    docs-assistant/
+      answer.schema.json
+      eval-result.schema.json
+      source-manifest.schema.json
     workflow-class.schema.json
-    proof-run.schema.json
     evidence-manifest.schema.json
     receipt.schema.json
     verifier-result.schema.json
     ci-evidence-bundle.schema.json
     ci-verifier-result.schema.json
     failure-state.schema.json
+  fixtures/
+    ai-model-evaluation/
+      valid/
+        evidence-packet.draft.valid.json
+      invalid/
+        negative-cases.json
   examples/
     valid/
     invalid/
   tests/
+    test_ai_model_evaluation_evidence_packet.py
     test_schema_validation.py
-    test_negative_fixtures.py
   docs/
-    contract-boundaries.md
-    outcome-semantics.md
-    failure-state-semantics.md
+    evidence-packets/
+      ai-model-evaluation-evidence-packet-v1.md
   .github/workflows/
     validate-contracts.yml
 ```
@@ -78,6 +89,8 @@ valid manifest fixture validates
 manifest missing artifact hash fails
 valid verifier result fixture validates
 invalid verifier outcome fails
+AI model evaluation draft fixture validates
+draft execution, unsupported overclaims, unfrozen-plan promotion, unauthorized disclosure, malformed hashes, and receipt-free reconstruction fail
 ```
 
 ## Non-goals for v0
@@ -90,4 +103,4 @@ invalid verifier outcome fails
 
 ## Trust boundary
 
-This repository is a schema authority only. A proof run is not verified merely because it conforms to these schemas. Verification requires a signed receipt, evidence manifest, artifact hashes, and an offline verifier path.
+This repository is a schema authority only. A proof run or evidence packet is not verified merely because it conforms to these schemas. Conformance does not establish execution, authority, evaluator qualification or independence, Commission-work eligibility, programme admission, artifact integrity, custody continuity, or legal compliance. Those conclusions require the named evidence and an independent verifier path.

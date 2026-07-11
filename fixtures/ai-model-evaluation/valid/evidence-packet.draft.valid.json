@@ -1,0 +1,209 @@
+{
+  "packet_version": "witnessops.ai_model_evaluation_evidence_packet.v1",
+  "packet_id": "AIMEP-2026-0001",
+  "packet_state": "DRAFT_TEMPLATE",
+  "evaluation_conclusion": "NOT_EVALUATED",
+  "generated_at": "2026-07-10T19:00:00Z",
+  "boundary": {
+    "packet_confers_authority": false,
+    "schema_conformance_is_proof": false,
+    "legal_compliance_conclusion": "NOT_ASSESSED",
+    "external_claims": {
+      "commission_work_eligibility": {
+        "status": "NOT_ESTABLISHED",
+        "evidence_refs": [],
+        "limitations": [
+          "No evidence establishes that WitnessOps is eligible for European Commission work."
+        ]
+      },
+      "evaluator_qualification": {
+        "status": "NOT_ESTABLISHED",
+        "evidence_refs": [],
+        "limitations": [
+          "No evidence establishes that WitnessOps or any named person is qualified as an AI evaluator."
+        ]
+      },
+      "testing_program_admission": {
+        "status": "NOT_ESTABLISHED",
+        "evidence_refs": [],
+        "limitations": [
+          "No evidence establishes admission to any testing programme."
+        ]
+      }
+    },
+    "non_claims": [
+      "This draft records a proposed evidence structure, not an executed evaluation.",
+      "Schema conformance does not establish legal compliance, evaluator independence, evaluator qualification, Commission eligibility, testing-programme admission, or truth of any future finding."
+    ]
+  },
+  "evaluator": {
+    "evaluator_id": "EVALR-0001",
+    "identity_status": "UNRESOLVED",
+    "legal_identity_ref": null,
+    "public_identity": "Unappointed evaluator",
+    "jurisdiction": "UNRESOLVED",
+    "competence_claims": [],
+    "competence_evidence_refs": [],
+    "limitations": [
+      "No evaluator has been appointed, identity-validated, competence-evidenced, or admitted as independent."
+    ],
+    "independence": {
+      "declaration_status": "INDEPENDENCE_UNRESOLVED",
+      "declaration_artifact_ref": null,
+      "corroboration_status": "NOT_REVIEWED",
+      "corroborating_evidence_refs": [],
+      "independent_reviewer_ref": null,
+      "conflicts": [],
+      "constraints": [
+        "Independence cannot be assessed until the evaluator, principal, funding, prior work, and reviewer are identified."
+      ]
+    }
+  },
+  "authority": {
+    "authority_id": "AUTH-0001",
+    "status": "UNRESOLVED",
+    "principal_identity_ref": null,
+    "principal_authority_source_ref": null,
+    "evaluator_appointment_ref": null,
+    "authorized_model_ref": null,
+    "authorized_methods": [],
+    "prohibited_actions": [
+      "Do not access a model, execute an evaluation, alter a model or environment, disclose evidence, or make external qualification claims from this draft."
+    ],
+    "starts_at": null,
+    "expires_at": null,
+    "jurisdiction_boundary": [],
+    "safety_constraints": [
+      "Execution remains blocked until authority, scope, stop powers, incident powers, and disclosure powers are admitted from named evidence."
+    ],
+    "stop_authority_ref": null,
+    "incident_authority_ref": null,
+    "disclosure_authority_ref": null
+  },
+  "model_access": {
+    "model_id": "MODEL-0001",
+    "status": "UNRESOLVED",
+    "provider": "UNRESOLVED",
+    "model_family": "UNRESOLVED",
+    "version_identifier": null,
+    "model_artifact_hash": null,
+    "access_mode": "UNRESOLVED",
+    "weight_access": "UNRESOLVED",
+    "system_prompt_access": "UNRESOLVED",
+    "log_access": [
+      "UNRESOLVED"
+    ],
+    "network_access": "UNRESOLVED",
+    "access_authority_ref": null,
+    "limitations": [
+      "No model, version, access boundary, access authority, or available telemetry has been established."
+    ]
+  },
+  "environment": {
+    "environment_id": "ENV-0001",
+    "status": "UNRESOLVED",
+    "manifest_artifact_ref": null,
+    "reproducibility_class": "UNRESOLVED",
+    "runtime_identity_ref": null,
+    "tool_refs": [],
+    "network_boundary": "UNRESOLVED",
+    "secret_handling": "No secret material is admitted to this draft packet.",
+    "randomness": "UNRESOLVED",
+    "capture_limitations": [
+      "No execution environment, runtime identity, network boundary, randomness controls, or capture mechanism has been admitted."
+    ]
+  },
+  "tools": [],
+  "evaluation_plan": {
+    "plan_id": "PLAN-0001",
+    "status": "DRAFT_UNFROZEN",
+    "plan_artifact_ref": null,
+    "plan_hash": null,
+    "frozen_at": null,
+    "frozen_by": null,
+    "criteria": [],
+    "stop_conditions": [
+      "Stop before execution while authority, model access, environment, tools, acceptance criteria, disclosure controls, or incident routes remain unresolved."
+    ],
+    "incident_route_ref": "INC-ROUTE-0001",
+    "non_claims": [
+      "An unfrozen plan cannot support a pass, fail, mitigation-effectiveness, or qualification conclusion."
+    ],
+    "amendments": []
+  },
+  "inputs": [],
+  "outputs": [],
+  "runs": [],
+  "observations": [],
+  "findings": [],
+  "mitigations": [],
+  "retests": [],
+  "custody_events": [],
+  "disclosure_controls": {
+    "status": "UNRESOLVED",
+    "authority_ref": null,
+    "default_classification": "CONTROLLED",
+    "public_release_authorized": false,
+    "secret_material_permitted": false,
+    "redaction_policy_ref": null,
+    "retention_policy_ref": null
+  },
+  "disclosure_events": [],
+  "incident_route": {
+    "route_id": "INC-ROUTE-0001",
+    "status": "UNRESOLVED",
+    "incident_owner_ref": null,
+    "classification_authority_ref": null,
+    "stop_authority_ref": null,
+    "routes": [],
+    "preservation_requirements": [
+      "Preserve original evidence, timestamps, custody state, access logs, and the last admitted authority boundary if an incident signal is later recorded."
+    ],
+    "unresolved_routes": [
+      "Evaluation-safety, principal, model-provider, regulatory, vulnerability, personal-data, sector, and emergency routes are unresolved."
+    ]
+  },
+  "incidents": [],
+  "independent_reconstruction": {
+    "status": "NOT_PERFORMED",
+    "planned_mode": "INTEGRITY_RECONSTRUCTION",
+    "verifier_ref": null,
+    "verifier_independence_artifact_ref": null,
+    "verification_receipt_ref": null,
+    "decision": "NOT_PERFORMED",
+    "limitations": [
+      "No verifier has been appointed and no evaluation evidence exists to reconstruct."
+    ]
+  },
+  "gap_register": [
+    {
+      "gap_id": "GAP-0001",
+      "missing_evidence": "Evaluator identity, competence evidence, and independence review",
+      "effect": "No evaluator qualification or independence conclusion can be made.",
+      "status": "OPEN",
+      "owner_ref": null
+    },
+    {
+      "gap_id": "GAP-0002",
+      "missing_evidence": "Principal authority, appointment, model authorization, and bounded powers",
+      "effect": "No model access or evaluation execution is authorized.",
+      "status": "OPEN",
+      "owner_ref": null
+    },
+    {
+      "gap_id": "GAP-0003",
+      "missing_evidence": "Model version, access boundary, environment manifest, tools, and frozen evaluation plan",
+      "effect": "No reproducible or verifier-reconstructable evaluation can begin.",
+      "status": "OPEN",
+      "owner_ref": null
+    },
+    {
+      "gap_id": "GAP-0004",
+      "missing_evidence": "Custody, disclosure, serious-incident, and independent-verification authorities and procedures",
+      "effect": "No evidence may be disclosed and no completed packet may be claimed.",
+      "status": "OPEN",
+      "owner_ref": null
+    }
+  ],
+  "manifest": []
+}
