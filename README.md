@@ -22,6 +22,11 @@ CI evidence contracts define workflow-run evidence structure only. They do not v
 | Offline verification implementation | No | Belongs in `witnessops-verifier`. |
 | Source-system adapters | No | Belongs in future `witnessops-adapters`. |
 
+The `witnessops.verification_context.v1` profile adds a signed context for
+subject, scope, method, timestamps, and limitations without claiming another
+receipt-version identifier. See
+[`docs/verification-context-profile-v1.md`](docs/verification-context-profile-v1.md).
+
 ## Initial map
 
 ```text
