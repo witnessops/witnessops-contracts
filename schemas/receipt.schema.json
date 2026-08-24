@@ -26,6 +26,11 @@
       "type": "string",
       "pattern": "^pr_[A-Za-z0-9_:-]+$"
     },
+    "receipt_profile": {
+      "type": "string",
+      "enum": ["witnessops.verification_context.v1"]
+    },
+    "verification_context": { "$ref": "#/$defs/verification_context" },
     "result": {
       "type": "object",
       "additionalProperties": false,
@@ -91,6 +96,180 @@
         "signature": {
           "type": "string",
           "minLength": 1
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "receipt_profile": { "const": "witnessops.verification_context.v1" }
+        },
+        "required": ["receipt_profile"]
+      },
+      "then": {
+        "required": ["verification_context"],
+        "properties": {
+          "receipt_version": { "const": "witnessops.receipt.v0" },
+          "signature": {
+            "required": ["encoding"],
+            "properties": {
+              "signature": {
+                "pattern": "^[a-f0-9]{128}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["verification_context"]
+      },
+      "then": {
+        "required": ["receipt_profile"]
+      }
+    }
+  ],
+  "$defs": {
+    "bounded_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "rfc3339_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?Z$"
+    },
+    "verification_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "scope",
+        "verification_method",
+        "timestamps",
+        "limitations"
+      ],
+      "properties": {
+        "subject": { "$ref": "#/$defs/subject" },
+        "scope": { "$ref": "#/$defs/scope" },
+        "verification_method": { "$ref": "#/$defs/verification_method" },
+        "timestamps": { "$ref": "#/$defs/timestamps" },
+        "limitations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bounded_text" },
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "reference"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["included", "criteria", "excluded", "observation_window"],
+      "properties": {
+        "included": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bounded_text" },
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true
+        },
+        "criteria": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bounded_text" },
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true
+        },
+        "excluded": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bounded_text" },
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true
+        },
+        "observation_window": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["started_at", "ended_at"],
+          "properties": {
+            "started_at": { "$ref": "#/$defs/rfc3339_utc" },
+            "ended_at": { "$ref": "#/$defs/rfc3339_utc" }
+          }
+        }
+      }
+    },
+    "verification_method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "procedure", "pass_criteria", "fail_criteria"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "procedure": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bounded_text" },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "pass_criteria": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bounded_text" },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "fail_criteria": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bounded_text" },
+          "minItems": 1,
+          "maxItems": 50
+        }
+      }
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["performed_at", "issued_at", "expires_at"],
+      "properties": {
+        "performed_at": { "$ref": "#/$defs/rfc3339_utc" },
+        "issued_at": { "$ref": "#/$defs/rfc3339_utc" },
+        "expires_at": {
+          "oneOf": [
+            { "$ref": "#/$defs/rfc3339_utc" },
+            { "type": "null" }
+          ]
         }
       }
     }

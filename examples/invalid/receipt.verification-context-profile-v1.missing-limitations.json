@@ -1,0 +1,66 @@
+{
+  "receipt_version": "witnessops.receipt.v0",
+  "receipt_profile": "witnessops.verification_context.v1",
+  "workflow_class": "privileged_access_approval",
+  "proof_run_id": "pr_synthetic_context_missing_limitations_001",
+  "verification_context": {
+    "subject": {
+      "type": "access_event",
+      "reference": "synthetic://access-event/002"
+    },
+    "scope": {
+      "included": [
+        "one synthetic privileged-access activation"
+      ],
+      "criteria": [
+        "approval preceded activation"
+      ],
+      "excluded": [
+        "organization-wide access governance"
+      ],
+      "observation_window": {
+        "started_at": "2026-08-23T10:00:00Z",
+        "ended_at": "2026-08-23T10:30:00Z"
+      }
+    },
+    "verification_method": {
+      "id": "privileged_access_approval_comparison",
+      "version": "1.0.0",
+      "procedure": [
+        "compare the supplied approval and activation records"
+      ],
+      "pass_criteria": [
+        "all declared checks pass"
+      ],
+      "fail_criteria": [
+        "one or more declared checks fail"
+      ]
+    },
+    "timestamps": {
+      "performed_at": "2026-08-23T10:31:00Z",
+      "issued_at": "2026-08-23T10:32:00Z",
+      "expires_at": null
+    }
+  },
+  "result": {
+    "outcome": "pass",
+    "failure_states": []
+  },
+  "claims": [
+    {
+      "claim": "approval_before_execution",
+      "status": "passed",
+      "evidence_refs": [
+        "approval_record",
+        "execution_record"
+      ]
+    }
+  ],
+  "manifest_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "signature": {
+    "algorithm": "ed25519",
+    "public_key_id": "witnessops_synthetic_test_key_001",
+    "encoding": "hex",
+    "signature": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

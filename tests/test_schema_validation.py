@@ -1,8 +1,10 @@
 import json
+from copy import deepcopy
+from datetime import datetime
 from pathlib import Path
 
 import pytest
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 SYNTHETIC_WORKFLOW = "privileged_access_approval_synthetic_public_proof_run"
@@ -21,6 +23,19 @@ SYNTHETIC_ALLOWED_CLAIMS = {
     "prohibited_actions_absent",
 }
 
+FORMAT_CHECKER = FormatChecker()
+
+
+@FORMAT_CHECKER.checks("date-time")
+def is_parseable_date_time(value):
+    if not isinstance(value, str):
+        return True
+    try:
+        datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    return True
+
 SCHEMA_FIXTURE_PAIRS = [
     ("workflow-class.schema.json", "workflow-class.privileged-access-approval.json"),
     ("workflow-class.schema.json", "workflow-class.external-ad-exposure-proof-run.json"),
@@ -28,6 +43,7 @@ SCHEMA_FIXTURE_PAIRS = [
     ("evidence-manifest.schema.json", "evidence-manifest.sample.json"),
     ("evidence-manifest.schema.json", "evidence-manifest.synthetic-access-approval-public-proof-run.json"),
     ("receipt.schema.json", "receipt.sample.json"),
+    ("receipt.schema.json", "receipt.verification-context-profile-v1.json"),
     ("receipt.schema.json", "receipt.synthetic-access-approval-public-proof-run.json"),
     ("verifier-result.schema.json", "verifier-result.sample.json"),
     ("verifier-result.schema.json", "verifier-result.synthetic-access-approval-public-proof-run.json"),
@@ -42,6 +58,7 @@ INVALID_FIXTURE_PAIRS = [
     ("workflow-class.schema.json", "workflow-class.execution-boundary-missing-templates.json"),
     ("evidence-manifest.schema.json", "evidence-manifest.missing-artifact-hash.json"),
     ("receipt.schema.json", "receipt.missing-signature.json"),
+    ("receipt.schema.json", "receipt.verification-context-profile-v1.missing-limitations.json"),
     ("verifier-result.schema.json", "verifier-result.invalid-outcome.json"),
     ("ci-evidence-bundle.schema.json", "ci-evidence-bundle.missing-hash.json"),
     ("ci-evidence-bundle.schema.json", "ci-evidence-bundle.bad-sha.json"),
@@ -58,7 +75,7 @@ def load_json(path: Path):
 def validator_for(schema_name: str) -> Draft202012Validator:
     schema = load_json(ROOT / "schemas" / schema_name)
     Draft202012Validator.check_schema(schema)
-    return Draft202012Validator(schema)
+    return Draft202012Validator(schema, format_checker=FORMAT_CHECKER)
 
 
 def valid_fixture(fixture_name: str):
@@ -119,6 +136,72 @@ def test_synthetic_access_approval_contract_semantics_pass():
         valid_fixture("receipt.synthetic-access-approval-public-proof-run.json"),
         valid_fixture("verifier-result.synthetic-access-approval-public-proof-run.json"),
     )
+
+
+def test_verification_context_profile_is_bounded_and_limitations_are_preserved():
+    receipt = valid_fixture("receipt.verification-context-profile-v1.json")
+    context = receipt["verification_context"]
+
+    assert receipt["receipt_version"] == "witnessops.receipt.v0"
+    assert receipt["receipt_profile"] == "witnessops.verification_context.v1"
+    assert context["subject"]["reference"] == "synthetic://access-event/001"
+    assert context["scope"]["included"] == ["one synthetic privileged-access activation"]
+    assert context["verification_method"]["version"] == "1.0.0"
+    assert context["timestamps"] == {
+        "performed_at": "2026-08-23T10:31:00Z",
+        "issued_at": "2026-08-23T10:32:00Z",
+        "expires_at": None,
+    }
+    assert context["limitations"] == [
+        "The receipt is bounded to the supplied synthetic artifacts.",
+        "A valid signature does not establish source-system honesty.",
+    ]
+
+
+def test_receipt_v0_remains_valid_without_profile_context_fields():
+    receipt = valid_fixture("receipt.sample.json")
+    errors = list(validator_for("receipt.schema.json").iter_errors(receipt))
+
+    assert receipt["receipt_version"] == "witnessops.receipt.v0"
+    assert "receipt_profile" not in receipt
+    assert "verification_context" not in receipt
+    assert errors == []
+
+
+def test_verification_context_profile_is_bound_to_receipt_v0():
+    receipt = deepcopy(valid_fixture("receipt.verification-context-profile-v1.json"))
+    receipt["receipt_version"] = "witnessops.receipt.v1"
+
+    errors = list(validator_for("receipt.schema.json").iter_errors(receipt))
+
+    assert errors != []
+
+
+def test_verification_context_profile_rejects_invalid_calendar_timestamp():
+    receipt = deepcopy(valid_fixture("receipt.verification-context-profile-v1.json"))
+    receipt["verification_context"]["timestamps"]["issued_at"] = "2026-02-30T10:32:00Z"
+
+    errors = list(validator_for("receipt.schema.json").iter_errors(receipt))
+
+    assert errors != []
+
+
+def test_verification_context_profile_requires_explicit_nullable_expiry():
+    receipt = deepcopy(valid_fixture("receipt.verification-context-profile-v1.json"))
+    receipt["verification_context"]["timestamps"].pop("expires_at")
+
+    errors = list(validator_for("receipt.schema.json").iter_errors(receipt))
+
+    assert errors != []
+
+
+def test_verification_context_profile_requires_real_ed25519_hex_signature():
+    receipt = deepcopy(valid_fixture("receipt.verification-context-profile-v1.json"))
+    receipt["signature"]["signature"] = "sample_signature_not_for_production"
+
+    errors = list(validator_for("receipt.schema.json").iter_errors(receipt))
+
+    assert errors != []
 
 
 def test_synthetic_access_approval_missing_approval_fails_semantic_contract():
