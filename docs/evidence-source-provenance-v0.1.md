@@ -69,7 +69,7 @@ does_not_establish
 limitations
 ```
 
-Fields that do not apply may be omitted or represented according to the governing schema. Absence must not be overloaded to mean unknown, not checked, or not applicable.
+Use the representation allowed by the governing schema. When a provenance field is omitted, retain its reason through an explicit applicability/state value or a corresponding limitations entry; bare absence must not be interpreted as not applicable. For example, distinguish a provider that issues no transaction reference from an expected reference that was not captured or could not be retrieved. This conceptual guidance does not add keys to existing closed schemas: use a supported extension or an accompanying evidence record, or leave adoption pending a reviewed schema revision.
 
 ## Field semantics
 
