@@ -29,8 +29,8 @@ provider output
 
 Additional invariants:
 
-- A valid or signed receipt can establish receipt integrity under a named mechanism without establishing that the issuer's underlying assertion is true.
-- A provider-reported factor such as `authority_check=pass` is not independently verified authority unless the authority verification mechanism, source, and scope are named.
+- A signature's presence does not establish receipt integrity. A successfully executed signature or other integrity check can establish only the integrity properties covered by that named mechanism and its selected trust inputs; it does not establish the truth of the issuer's underlying assertion.
+- A provider-reported factor such as `authority_check=pass` remains provider-reported unless a separate authority check was actually performed with retained evidence and a bounded result. Calling that check independent additionally requires explaining the verifier's independence from the relevant provider, authority source, and assertion. Merely naming a mechanism, source, and scope establishes neither execution nor independence.
 - An adapter can expose only part of a provider's full input contract. A decision produced through a limited adapter must retain that coverage boundary.
 - A provider decision does not establish downstream execution. Execution evidence remains a separate domain.
 - Missing, unsupported, unavailable, not-checked, and not-applicable inputs must remain distinguishable.
@@ -103,13 +103,13 @@ If an applicable provider input could not be supplied through the adapter, recor
 
 Describes where authority information came from and whether that authority was independently resolved, provider-resolved, developer-supplied, operator-supplied, unavailable, or otherwise bounded by a named mechanism.
 
-Do not infer authority truth from a generic provider `pass` value.
+Do not infer authority truth from a generic provider `pass` value. Preserve whether a check actually ran, its result and supporting evidence, and whether independence is established or remains unknown. Provider-controlled or developer/operator-supplied information does not become independent evidence because those fields are populated.
 
 ### verification_mechanism / verification_scope
 
 Names the method used to verify the record or claim and its bounded coverage.
 
-This must align with `RESULT-SEMANTICS.md`: verification is valid only under the declared mechanism and mode and does not automatically establish the substantive claim.
+This must align with `RESULT-SEMANTICS.md`: verification is valid only under the declared mechanism and mode and does not automatically establish the substantive claim. Retain the executed check's result and evidence; naming a method is not evidence that it ran or passed.
 
 ### receipt_ref / trace_ref / transaction_ref
 
@@ -127,9 +127,9 @@ Do not infer execution from policy/decision outputs.
 
 A concise bounded statement of what the retained record supports.
 
-Example:
+Example, when the exchange and integration context have actually been retained:
 
-`The provider issued decision X for input contract Y through adapter Z at the recorded time.`
+`The recorded exchange contains provider decision X for input contract Y through adapter Z at the recorded time.`
 
 ### does_not_establish
 
@@ -145,7 +145,7 @@ Records missing coverage, adapter restrictions, unavailable checks, unresolved i
 
 ## Interpretation rules
 
-1. Preserve provider-native decision/factor values as provider observations unless WitnessOps applies a named verification mechanism.
+1. Preserve provider-native decision/factor values as provider observations. A stronger verification claim requires an actually executed check, its evidence and result, and its named mechanism and scope; independence must be established separately.
 2. Do not map provider `pass`, `allow`, `approved`, `valid`, or similar labels directly into WitnessOps verification semantics.
 3. If an adapter cannot submit an applicable input supported by the provider's fuller contract, record the adapter limitation and do not claim that the fuller provider evaluation occurred.
 4. Keep authority, policy, execution, evidence, and verification semantics separate.
@@ -155,24 +155,39 @@ Records missing coverage, adapter restrictions, unavailable checks, unresolved i
 
 ## Generic example
 
-A third-party decision system returns:
+This fictional example combines a provider response with retained local integration context. All names and references below are illustrative, not live evidence or new required schema fields:
 
 ```text
+provider: example-decision-system
+provider_version: unknown
+adapter: example-limited-adapter
+adapter_version: 0.1
+input_contract: example-action-card
+input_contract_version: 0.1
+input_scope: action summary and evidence/rule references; no delegated-authority packet
+request_capture_ref: synthetic://exchange-123/request
+response_capture_ref: synthetic://exchange-123/response
+adapter_contract_ref: synthetic://example-limited-adapter/0.1
+
 decision: human_review
 authority_factor: pass
 receipt_ref: provider-receipt-123
+authority_verification_status: provider-reported; not independently checked
+verification_mechanism: receipt integrity not checked
+execution_boundary: decision response only; downstream execution not observed
 ```
 
-The integration adapter did not support the provider's fuller delegated-authority packet.
+For this example, the retained adapter contract records that the integration cannot submit the provider's fuller delegated-authority packet. The exchange and local context support the interpretation below; the provider's three result fields alone would not.
 
 Safe interpretation:
 
 ```text
 establishes:
-  The provider issued human_review through the named adapter for the
-  supplied limited input contract.
+  The retained exchange records a human_review response obtained through
+  example-limited-adapter 0.1 for the limited example-action-card 0.1 input.
 
 does_not_establish:
+  Receipt integrity or provider/source-system honesty was verified.
   The underlying delegated authority was independently verified.
   The provider evaluated authority fields the adapter could not submit.
   The downstream action executed.
