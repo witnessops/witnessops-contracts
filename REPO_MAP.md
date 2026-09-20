@@ -33,13 +33,16 @@ website copy
 
 ## Current contract structure
 
+This is a selective orientation map, not an exhaustive file inventory.
+Ownership and structural-validity boundaries remain defined in [AGENTS.md](./AGENTS.md).
+A listed path is not evidence of execution or independent verification;
+inspect the Git tree at the chosen revision for complete tracked-file coverage.
+
 ```text
 schemas/
   ai-model-evaluation/
     evidence-packet.schema.json
   docs-assistant/
-    valid/
-    invalid/
     answer.schema.json
     eval-result.schema.json
     source-manifest.schema.json
@@ -60,6 +63,8 @@ fixtures/
     invalid/
       negative-cases.json
   docs-assistant/
+    valid/
+    invalid/
 
 examples/
   valid/
