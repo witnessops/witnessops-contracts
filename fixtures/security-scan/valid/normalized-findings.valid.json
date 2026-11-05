@@ -1,0 +1,27 @@
+[
+  {
+    "id": "f-0123456789abcdef0123",
+    "backend": "semgrep",
+    "severity": "high",
+    "title": "Shell execution observed",
+    "description": "A bounded test fixture finding.",
+    "category": "sast",
+    "status": "observed",
+    "confidence": "high",
+    "fingerprint": "0123456789abcdef0123456789abcdef",
+    "provenance": {
+      "engine": "Semgrep CE",
+      "artifactPath": "backends/semgrep/semgrep.json",
+      "engineVersion": "1.140.0",
+      "ruleId": "wops-orch-os-system"
+    },
+    "location": {
+      "path": "app.py",
+      "startLine": 10,
+      "endLine": 10,
+      "startCol": 5,
+      "endCol": 20
+    },
+    "cwe": ["CWE-78"]
+  }
+]

@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:witnessops:contracts:security-scan:orchestrator-run:v1",
+  "title": "WitnessOps Security Scan Orchestrator Run",
+  "description": "Structural contract for one Security CLI scan-orchestrator state record. Conformance does not prove authorization, scanner execution, finding truth, or production acceptance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "draft",
+    "contract",
+    "runId",
+    "status",
+    "targetPath",
+    "targetInput",
+    "scope",
+    "scopePath",
+    "ownership",
+    "requestedBackends",
+    "effectiveBackends",
+    "startedAt",
+    "endedAt",
+    "backendRuns",
+    "summary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "witnessops.security_scan_orchestrator.run.v1"
+    },
+    "draft": {
+      "const": true
+    },
+    "contract": {
+      "$ref": "#/$defs/contract_reference"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^orch-[0-9]{8}T[0-9]{6}-[a-f0-9]{8}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "running",
+        "PASS",
+        "PASS_WITH_FINDINGS",
+        "FAIL",
+        "BLOCKED",
+        "CANCELED"
+      ]
+    },
+    "targetPath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "targetInput": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "scopePath": {
+      "type": "string",
+      "maxLength": 4096
+    },
+    "ownership": {
+      "type": "string",
+      "enum": ["witnessops", "customer", "unknown"]
+    },
+    "requestedBackends": {
+      "$ref": "#/$defs/backend_list"
+    },
+    "effectiveBackends": {
+      "$ref": "#/$defs/backend_list"
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "endedAt": {
+      "oneOf": [
+        {"type": "string", "format": "date-time"},
+        {"type": "null"}
+      ]
+    },
+    "backendRuns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "codex": {"$ref": "#/$defs/backend_run"},
+        "semgrep": {"$ref": "#/$defs/backend_run"},
+        "snyk": {"$ref": "#/$defs/backend_run"},
+        "wops": {"$ref": "#/$defs/backend_run"}
+      }
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "running"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {"endedAt": {"type": "null"}}
+      },
+      "else": {
+        "properties": {"endedAt": {"type": "string", "format": "date-time"}}
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "backend": {
+      "type": "string",
+      "enum": ["codex", "semgrep", "snyk", "wops"]
+    },
+    "backend_list": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/backend"},
+      "uniqueItems": true,
+      "maxItems": 4
+    },
+    "contract_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtimeId",
+        "runtimeSha256",
+        "schemaRepository",
+        "schemaCommit",
+        "runSchemaPath",
+        "runSchemaSha256",
+        "findingsSchemaPath",
+        "findingsSchemaSha256"
+      ],
+      "properties": {
+        "runtimeId": {
+          "const": "witnessops.security_scan_orchestrator.runtime.v1"
+        },
+        "runtimeSha256": {"$ref": "#/$defs/sha256"},
+        "schemaRepository": {
+          "const": "witnessops/witnessops-contracts"
+        },
+        "schemaCommit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "runSchemaPath": {
+          "const": "schemas/security-scan/orchestrator-run.schema.json"
+        },
+        "runSchemaSha256": {"$ref": "#/$defs/sha256"},
+        "findingsSchemaPath": {
+          "const": "schemas/security-scan/normalized-findings.schema.json"
+        },
+        "findingsSchemaSha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "backend_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backendRunId", "state", "nativeIds", "engine"],
+      "properties": {
+        "backendRunId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "state": {
+          "type": "string",
+          "enum": ["started", "complete", "failed", "canceled"]
+        },
+        "nativeIds": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "scanId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "handoffClaimToken": {
+              "const": "[withheld]"
+            }
+          }
+        },
+        "engine": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        }
+      }
+    }
+  }
+}

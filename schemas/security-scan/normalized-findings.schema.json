@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:witnessops:contracts:security-scan:normalized-findings:v1",
+  "title": "WitnessOps Security Scan Normalized Findings",
+  "description": "Normalized observed findings emitted by Security CLI scan orchestration. Conformance does not establish exploitability, truth, remediation, or independent verification.",
+  "type": "array",
+  "items": {"$ref": "#/$defs/finding"},
+  "$defs": {
+    "finding_id": {
+      "type": "string",
+      "pattern": "^f-[a-f0-9]{20}$"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine", "artifactPath"],
+      "properties": {
+        "engine": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "artifactPath": {
+          "type": "string",
+          "pattern": "^backends/(codex|semgrep|snyk|wops)/[A-Za-z0-9._/-]+$",
+          "not": {"pattern": "(^|/)\\.\\.(/|$)"}
+        },
+        "engineVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "ruleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      }
+    },
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "startLine": {"type": "integer", "minimum": 1},
+        "endLine": {"type": "integer", "minimum": 1},
+        "startCol": {"type": "integer", "minimum": 1},
+        "endCol": {"type": "integer", "minimum": 1}
+      }
+    },
+    "merge_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backends", "mergedFrom"],
+      "properties": {
+        "backends": {
+          "type": "array",
+          "items": {"enum": ["codex", "semgrep", "snyk", "wops"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "mergedFrom": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/finding_id"},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "backend",
+        "severity",
+        "title",
+        "category",
+        "status",
+        "confidence",
+        "fingerprint",
+        "provenance"
+      ],
+      "properties": {
+        "id": {"$ref": "#/$defs/finding_id"},
+        "backend": {"enum": ["codex", "semgrep", "snyk", "wops"]},
+        "severity": {
+          "enum": ["critical", "high", "medium", "low", "info", "unknown"]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$",
+          "maxLength": 80
+        },
+        "status": {"const": "observed"},
+        "confidence": {"enum": ["high", "medium", "low", "unknown"]},
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "backendLocalId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "provenance": {"$ref": "#/$defs/provenance"},
+        "provenanceAll": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/provenance"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "location": {"$ref": "#/$defs/location"},
+        "cwe": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^CWE-[0-9]+$"},
+          "uniqueItems": true
+        },
+        "cve": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^CVE-[0-9]{4}-[0-9]{4,7}$"},
+          "uniqueItems": true
+        },
+        "raw": {"$ref": "#/$defs/merge_record"},
+        "related": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/finding_id"},
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "f-0123456789abcdef0123",
+    "backend": "semgrep",
+    "severity": "high",
+    "title": "Missing provenance",
+    "category": "sast",
+    "status": "observed",
+    "confidence": "high",
+    "fingerprint": "0123456789abcdef0123456789abcdef"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "schema": "witnessops.security_scan_orchestrator.run.v1",
+  "draft": true,
+  "contract": {
+    "runtimeId": "witnessops.security_scan_orchestrator.runtime.v1",
+    "runtimeSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "runId": "orch-20261105T163500-abcdef12",
+  "status": "BLOCKED",
+  "targetPath": "/workspace/customer/demo",
+  "targetInput": "/workspace/customer/demo",
+  "scope": ".",
+  "scopePath": "/workspace/customer/demo",
+  "ownership": "customer",
+  "requestedBackends": ["codex"],
+  "effectiveBackends": [],
+  "startedAt": "2026-11-05T16:35:00+01:00",
+  "endedAt": "2026-11-05T16:35:01+01:00",
+  "backendRuns": {},
+  "summary": "BLOCKED"
+}
