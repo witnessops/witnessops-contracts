@@ -1,0 +1,27 @@
+{
+  "schema": "witnessops.security_scan_orchestrator.run.v1",
+  "draft": true,
+  "contract": {
+    "runtimeId": "witnessops.security_scan_orchestrator.runtime.v1",
+    "runtimeSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "schemaRepository": "witnessops/witnessops-contracts",
+    "schemaCommit": "1111111111111111111111111111111111111111",
+    "runSchemaPath": "schemas/security-scan/orchestrator-run.schema.json",
+    "runSchemaSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "findingsSchemaPath": "schemas/security-scan/normalized-findings.schema.json",
+    "findingsSchemaSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "runId": "orch-20261105T163500-abcdef12",
+  "status": "running",
+  "targetPath": "/workspace/security-cli",
+  "targetInput": "/workspace/security-cli",
+  "scope": ".",
+  "scopePath": "/workspace/security-cli",
+  "ownership": "witnessops",
+  "requestedBackends": ["wops"],
+  "effectiveBackends": ["wops"],
+  "startedAt": "2026-11-05T16:35:00+01:00",
+  "endedAt": "2026-11-05T16:35:01+01:00",
+  "backendRuns": {},
+  "summary": "running"
+}

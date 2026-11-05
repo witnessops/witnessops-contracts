@@ -1,0 +1,16 @@
+[
+  {
+    "id": "f-0123456789abcdef0123",
+    "backend": "semgrep",
+    "severity": "high",
+    "title": "Invalid artifact path",
+    "category": "sast",
+    "status": "observed",
+    "confidence": "high",
+    "fingerprint": "0123456789abcdef0123456789abcdef",
+    "provenance": {
+      "engine": "Semgrep CE",
+      "artifactPath": "backends/semgrep/../outside.json"
+    }
+  }
+]

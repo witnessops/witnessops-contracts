@@ -1,0 +1,40 @@
+{
+  "schema": "witnessops.security_scan_orchestrator.run.v1",
+  "draft": true,
+  "contract": {
+    "runtimeId": "witnessops.security_scan_orchestrator.runtime.v1",
+    "runtimeSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "schemaRepository": "witnessops/witnessops-contracts",
+    "schemaCommit": "1111111111111111111111111111111111111111",
+    "runSchemaPath": "schemas/security-scan/orchestrator-run.schema.json",
+    "runSchemaSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "findingsSchemaPath": "schemas/security-scan/normalized-findings.schema.json",
+    "findingsSchemaSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "runId": "orch-20261105T163500-1234abcd",
+  "status": "PASS_WITH_FINDINGS",
+  "targetPath": "/workspace/security-cli",
+  "targetInput": "/workspace/security-cli",
+  "scope": ".",
+  "scopePath": "/workspace/security-cli",
+  "ownership": "witnessops",
+  "requestedBackends": ["semgrep", "wops"],
+  "effectiveBackends": ["semgrep", "wops"],
+  "startedAt": "2026-11-05T16:35:00+01:00",
+  "endedAt": "2026-11-05T16:35:10+01:00",
+  "backendRuns": {
+    "semgrep": {
+      "backendRunId": "semgrep-orch-20261105T163500-1234abcd",
+      "state": "complete",
+      "nativeIds": {},
+      "engine": "Semgrep CE"
+    },
+    "wops": {
+      "backendRunId": "wops-orch-20261105T163500-1234abcd",
+      "state": "complete",
+      "nativeIds": {},
+      "engine": "WitnessOps hygiene"
+    }
+  },
+  "summary": "PASS_WITH_FINDINGS — 1 high (observed); backends: semgrep, wops"
+}

@@ -32,6 +32,9 @@ receipt-version identifier. See
 ```text
 witnessops-contracts/
   schemas/
+    security-scan/
+      orchestrator-run.schema.json
+      normalized-findings.schema.json
     ai-model-evaluation/
       evidence-packet.schema.json
     docs-assistant/
@@ -46,6 +49,9 @@ witnessops-contracts/
     ci-verifier-result.schema.json
     failure-state.schema.json
   fixtures/
+    security-scan/
+      valid/
+      invalid/
     ai-model-evaluation/
       valid/
         evidence-packet.draft.valid.json
@@ -55,6 +61,7 @@ witnessops-contracts/
     valid/
     invalid/
   tests/
+    test_security_scan_orchestrator_schemas.py
     test_ai_model_evaluation_evidence_packet.py
     test_schema_validation.py
   docs/
@@ -96,6 +103,8 @@ valid verifier result fixture validates
 invalid verifier outcome fails
 AI model evaluation draft fixture validates
 draft execution, unsupported overclaims, unfrozen-plan promotion, unauthorized disclosure, malformed hashes, and receipt-free reconstruction fail
+security scan orchestrator run and normalized-finding fixtures validate
+missing schema pins, invalid terminal timestamps, missing finding provenance, and artifact traversal fail
 ```
 
 ## Non-goals for v0
